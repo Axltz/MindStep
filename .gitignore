@@ -1,0 +1,22 @@
+*.iml
+.gradle
+/local.properties
+/.idea/
+.DS_Store
+/build
+/captures
+.externalNativeBuild
+.cxx
+local.properties
+
+# Scripts y temporales de soporte
+chrome_temp/
+edge_temp/
+__pycache__/
+*.pyc
+*.py
+preview_*.png
+test.*
+test_rl.pdf
+udeg_logo_0.png
+Actividades_Axel_Martinez/
