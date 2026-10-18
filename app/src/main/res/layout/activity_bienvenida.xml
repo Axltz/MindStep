@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg_screen"
+    android:orientation="vertical">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:paddingHorizontal="24dp"
+            android:paddingTop="36dp"
+            android:paddingBottom="24dp">
+
+            <!-- Logo MindStep -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
+                    android:layout_marginEnd="8dp"
+                    android:src="@drawable/ic_leaf"
+                    app:tint="@color/primary" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="MindStep"
+                    android:textColor="@color/text_dark"
+                    android:textSize="22sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <!-- Ilustración central -->
+            <ImageView
+                android:id="@+id/ivIlustracion"
+                android:layout_width="match_parent"
+                android:layout_height="220dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginBottom="24dp"
+                android:adjustViewBounds="true"
+                android:scaleType="fitCenter"
+                android:src="@drawable/inicio" />
+
+            <!-- Card contenedor de bienvenida -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardBackgroundColor="@color/card_bg"
+                app:cardCornerRadius="24dp"
+                app:cardElevation="3dp"
+                app:strokeColor="@color/card_border"
+                app:strokeWidth="1dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="24dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Bienvenido a MindStep"
+                        android:textColor="@color/text_dark"
+                        android:textSize="24sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="6dp"
+                        android:layout_marginBottom="20dp"
+                        android:text="Tu espacio seguro para evaluar y cuidar tus hábitos cotidianos."
+                        android:textColor="@color/text_muted"
+                        android:textSize="14sp" />
+
+                    <!-- Input Nombre -->
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/tilNombre"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="16dp"
+                        app:boxCornerRadiusBottomEnd="14dp"
+                        app:boxCornerRadiusBottomStart="14dp"
+                        app:boxCornerRadiusTopEnd="14dp"
+                        app:boxCornerRadiusTopStart="14dp"
+                        app:boxStrokeColor="@color/primary"
+                        app:hintTextColor="@color/primary"
+                        app:startIconDrawable="@drawable/ic_nav_settings"
+                        app:startIconTint="@color/text_muted">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etNombre"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="¿Cómo te llamas? (Ej. Axel)"
+                            android:inputType="textPersonName"
+                            android:textColor="@color/text_dark"
+                            android:textSize="15sp" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <!-- Aviso de Privacidad Local -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="24dp"
+                        android:background="@drawable/bg_option_unselected"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:padding="12dp">
+
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:layout_marginEnd="10dp"
+                            android:src="@drawable/ic_check"
+                            app:tint="@color/primary" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Tus datos se guardan únicamente de manera local en tu dispositivo."
+                            android:textColor="@color/text_body"
+                            android:textSize="12sp" />
+                    </LinearLayout>
+
+                    <!-- Botón Comenzar -->
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnComenzar"
+                        android:layout_width="match_parent"
+                        android:layout_height="54dp"
+                        android:backgroundTint="@color/primary"
+                        android:text="Comenzar Evaluación Inicial →"
+                        android:textAllCaps="false"
+                        android:textColor="@color/white"
+                        android:textSize="15sp"
+                        android:textStyle="bold"
+                        app:cornerRadius="14dp" />
+
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

@@ -1,0 +1,346 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg_screen"
+    android:orientation="vertical">
+
+    <!-- Toolbar superior con botón atrás -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/card_bg"
+        android:elevation="2dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingHorizontal="16dp">
+
+        <ImageButton
+            android:id="@+id/btnBack"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="Regresar"
+            android:src="@drawable/ic_arrow_back"
+            app:tint="@color/text_dark" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:text="Evaluación Diagnóstica"
+            android:textColor="@color/text_dark"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="20dp">
+
+            <!-- Indicador de Paso y Barra de progreso -->
+            <TextView
+                android:id="@+id/tvPasoIndicador"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:text="Paso 1 de 3 - Diagnóstico Inicial"
+                android:textColor="@color/primary"
+                android:textSize="13sp"
+                android:textStyle="bold" />
+
+            <com.google.android.material.progressindicator.LinearProgressIndicator
+                android:id="@+id/progressBar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="24dp"
+                android:progress="33"
+                app:indicatorColor="@color/primary"
+                app:trackColor="@color/card_border"
+                app:trackCornerRadius="4dp"
+                app:trackThickness="6dp" />
+
+            <!-- Card de Pregunta -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                app:cardBackgroundColor="@color/card_bg"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="2dp"
+                app:strokeColor="@color/card_border"
+                app:strokeWidth="1dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="20dp">
+
+                    <TextView
+                        android:id="@+id/tvCategoria"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:text="ESTRÉS Y ENERGÍA"
+                        android:textColor="@color/text_muted"
+                        android:textSize="11sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tvPregunta"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:lineSpacingExtra="3dp"
+                        android:text="¿Con qué frecuencia has sentido sobrecarga de estrés o agotamiento en tu trabajo/escuela esta semana?"
+                        android:textColor="@color/text_dark"
+                        android:textSize="17sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Opciones Interactivas -->
+
+            <!-- Opción A -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardOpcionA"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                android:clickable="true"
+                android:focusable="true"
+                app:cardBackgroundColor="@color/card_bg"
+                app:cardCornerRadius="14dp"
+                app:cardElevation="1dp"
+                app:strokeColor="@color/card_border"
+                app:strokeWidth="1dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:id="@+id/tvBadgeA"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:background="@drawable/bg_option_unselected"
+                        android:gravity="center"
+                        android:text="A"
+                        android:textColor="@color/text_dark"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tvTextoA"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="12dp"
+                        android:layout_weight="1"
+                        android:text="Rara vez o Nunca"
+                        android:textColor="@color/text_body"
+                        android:textSize="14sp" />
+
+                    <ImageView
+                        android:id="@+id/ivCheckA"
+                        android:layout_width="22dp"
+                        android:layout_height="22dp"
+                        android:src="@drawable/ic_check"
+                        android:visibility="gone"
+                        app:tint="@color/primary" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Opción B -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardOpcionB"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                android:clickable="true"
+                android:focusable="true"
+                app:cardBackgroundColor="@color/card_bg"
+                app:cardCornerRadius="14dp"
+                app:cardElevation="1dp"
+                app:strokeColor="@color/card_border"
+                app:strokeWidth="1dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:id="@+id/tvBadgeB"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:background="@drawable/bg_option_unselected"
+                        android:gravity="center"
+                        android:text="B"
+                        android:textColor="@color/text_dark"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tvTextoB"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="12dp"
+                        android:layout_weight="1"
+                        android:text="A veces durante la semana"
+                        android:textColor="@color/text_body"
+                        android:textSize="14sp" />
+
+                    <ImageView
+                        android:id="@+id/ivCheckB"
+                        android:layout_width="22dp"
+                        android:layout_height="22dp"
+                        android:src="@drawable/ic_check"
+                        android:visibility="gone"
+                        app:tint="@color/primary" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Opción C -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardOpcionC"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                android:clickable="true"
+                android:focusable="true"
+                app:cardBackgroundColor="@color/card_bg"
+                app:cardCornerRadius="14dp"
+                app:cardElevation="1dp"
+                app:strokeColor="@color/card_border"
+                app:strokeWidth="1dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:id="@+id/tvBadgeC"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:background="@drawable/bg_option_unselected"
+                        android:gravity="center"
+                        android:text="C"
+                        android:textColor="@color/text_dark"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tvTextoC"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="12dp"
+                        android:layout_weight="1"
+                        android:text="Frecuentemente casi todos los días"
+                        android:textColor="@color/text_body"
+                        android:textSize="14sp" />
+
+                    <ImageView
+                        android:id="@+id/ivCheckC"
+                        android:layout_width="22dp"
+                        android:layout_height="22dp"
+                        android:src="@drawable/ic_check"
+                        android:visibility="gone"
+                        app:tint="@color/primary" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Opción D -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardOpcionD"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="24dp"
+                android:clickable="true"
+                android:focusable="true"
+                app:cardBackgroundColor="@color/card_bg"
+                app:cardCornerRadius="14dp"
+                app:cardElevation="1dp"
+                app:strokeColor="@color/card_border"
+                app:strokeWidth="1dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:id="@+id/tvBadgeD"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:background="@drawable/bg_option_unselected"
+                        android:gravity="center"
+                        android:text="D"
+                        android:textColor="@color/text_dark"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tvTextoD"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="12dp"
+                        android:layout_weight="1"
+                        android:text="Constante y abrumador"
+                        android:textColor="@color/text_body"
+                        android:textSize="14sp" />
+
+                    <ImageView
+                        android:id="@+id/ivCheckD"
+                        android:layout_width="22dp"
+                        android:layout_height="22dp"
+                        android:src="@drawable/ic_check"
+                        android:visibility="gone"
+                        app:tint="@color/primary" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- Botón Siguiente en la parte inferior -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/card_bg"
+        android:elevation="4dp"
+        android:padding="16dp">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnSiguiente"
+            android:layout_width="match_parent"
+            android:layout_height="54dp"
+            android:backgroundTint="@color/primary"
+            android:text="Siguiente Pregunta"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            app:cornerRadius="14dp" />
+    </LinearLayout>
+
+</LinearLayout>
