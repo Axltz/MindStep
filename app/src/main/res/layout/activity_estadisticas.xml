@@ -1,0 +1,315 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg_screen">
+
+    <!-- Top AppBar -->
+    <LinearLayout
+        android:id="@+id/headerEstadisticas"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/card_bg"
+        android:elevation="2dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingHorizontal="20dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Estadísticas y Patrones"
+            android:textColor="@color/text_dark"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/bottomNavigation"
+        android:layout_below="@id/headerEstadisticas"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="20dp">
+
+            <!-- Selector de periodo (7 Días, 30 Días, 3 Meses) -->
+            <com.google.android.material.button.MaterialButtonToggleGroup
+                android:id="@+id/togglePeriodo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                app:checkedButton="@id/btnPeriodo7Dias"
+                app:selectionRequired="true"
+                app:singleSelection="true">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnPeriodo7Dias"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    android:layout_width="0dp"
+                    android:layout_height="48dp"
+                    android:layout_weight="1"
+                    android:text="7 Días"
+                    android:textAllCaps="false"
+                    android:textColor="@color/text_dark"
+                    android:textSize="13sp" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnPeriodo30Dias"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    android:layout_width="0dp"
+                    android:layout_height="48dp"
+                    android:layout_weight="1"
+                    android:text="30 Días"
+                    android:textAllCaps="false"
+                    android:textColor="@color/text_dark"
+                    android:textSize="13sp" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnPeriodo3Meses"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    android:layout_width="0dp"
+                    android:layout_height="48dp"
+                    android:layout_weight="1"
+                    android:text="3 Meses"
+                    android:textAllCaps="false"
+                    android:textColor="@color/text_dark"
+                    android:textSize="13sp" />
+            </com.google.android.material.button.MaterialButtonToggleGroup>
+
+            <!-- 1. Tarjeta Gráfica Sueño y Estrés -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                app:cardBackgroundColor="@color/card_bg"
+                app:cardCornerRadius="20dp"
+                app:cardElevation="2dp"
+                app:strokeColor="@color/card_border"
+                app:strokeWidth="1dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="20dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Sueño y estrés"
+                        android:textColor="@color/text_dark"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+                    <!-- Leyenda interactiva -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginBottom="16dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <View
+                            android:layout_width="16dp"
+                            android:layout_height="4dp"
+                            android:background="#2563EB" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="6dp"
+                            android:layout_marginEnd="20dp"
+                            android:text="Sueño"
+                            android:textColor="@color/text_muted"
+                            android:textSize="13sp" />
+
+                        <View
+                            android:layout_width="16dp"
+                            android:layout_height="4dp"
+                            android:background="#F97316" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="6dp"
+                            android:text="Estrés"
+                            android:textColor="@color/text_muted"
+                            android:textSize="13sp" />
+                    </LinearLayout>
+
+                    <!-- Custom View para Canvas -->
+                    <com.example.mindstep.GraficaPatronesView
+                        android:id="@+id/graficaPatrones"
+                        android:layout_width="match_parent"
+                        android:layout_height="180dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="Datos ilustrativos Octubre 2026"
+                        android:textColor="@color/text_muted"
+                        android:textSize="11sp" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- 2. Tarjeta Patrón Detectado -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                app:cardBackgroundColor="#FAF5FF"
+                app:cardCornerRadius="20dp"
+                app:cardElevation="2dp"
+                app:strokeColor="#E9D5FF"
+                app:strokeWidth="1dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="20dp">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="8dp"
+                            android:text="💡"
+                            android:textSize="18sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Patrón Detectado"
+                            android:textColor="#7E22CE"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:lineSpacingExtra="2dp"
+                        android:text="Menos de 6h de sueño aumentan tu estrés 45% al día siguiente."
+                        android:textColor="@color/text_dark"
+                        android:textSize="14sp" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- 3. Tarjeta Principales Disparadores -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="24dp"
+                app:cardBackgroundColor="@color/card_bg"
+                app:cardCornerRadius="20dp"
+                app:cardElevation="2dp"
+                app:strokeColor="@color/card_border"
+                app:strokeWidth="1dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="20dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="16dp"
+                        android:text="Principales disparadores"
+                        android:textColor="@color/text_dark"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                    <!-- Disparador 1: Carga Académica 52% -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Carga Académica (52%)"
+                        android:textColor="@color/text_body"
+                        android:textSize="13sp" />
+
+                    <com.google.android.material.progressindicator.LinearProgressIndicator
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="6dp"
+                        android:layout_marginBottom="14dp"
+                        android:progress="52"
+                        app:indicatorColor="#2563EB"
+                        app:trackColor="@color/card_border"
+                        app:trackCornerRadius="4dp"
+                        app:trackThickness="8dp" />
+
+                    <!-- Disparador 2: Uso Pantallas 28% -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Uso Pantallas (28%)"
+                        android:textColor="@color/text_body"
+                        android:textSize="13sp" />
+
+                    <com.google.android.material.progressindicator.LinearProgressIndicator
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="6dp"
+                        android:layout_marginBottom="14dp"
+                        android:progress="28"
+                        app:indicatorColor="#0284C7"
+                        app:trackColor="@color/card_border"
+                        app:trackCornerRadius="4dp"
+                        app:trackThickness="8dp" />
+
+                    <!-- Disparador 3: Poco Descanso 20% -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Poco Descanso (20%)"
+                        android:textColor="@color/text_body"
+                        android:textSize="13sp" />
+
+                    <com.google.android.material.progressindicator.LinearProgressIndicator
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="6dp"
+                        android:progress="20"
+                        app:indicatorColor="#F59E0B"
+                        app:trackColor="@color/card_border"
+                        app:trackCornerRadius="4dp"
+                        app:trackThickness="8dp" />
+
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+    <!-- Bottom Navigation -->
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottomNavigation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/card_bg"
+        app:elevation="8dp"
+        app:itemIconTint="@color/text_muted"
+        app:itemTextColor="@color/text_muted"
+        app:labelVisibilityMode="labeled"
+        app:menu="@menu/bottom_nav_menu" />
+
+</RelativeLayout>
