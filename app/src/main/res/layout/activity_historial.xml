@@ -5,7 +5,7 @@
     android:id="@+id/rootHistorial"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F8FAFC"
+    android:background="@color/bg_screen"
     tools:context=".HistorialActivity">
 
     <!-- 1. Top App Bar -->
@@ -14,14 +14,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:background="#FFFFFF"
+        android:background="@color/card_bg"
         app:elevation="4dp">
 
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/toolbarHistorial"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="#FFFFFF">
+            android:background="@color/card_bg">
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -35,7 +35,7 @@
                     android:layout_alignParentStart="true"
                     android:layout_centerVertical="true"
                     android:text="Historial de Bienestar"
-                    android:textColor="#0F172A"
+                    android:textColor="@color/text_dark"
                     android:textSize="20sp"
                     android:textStyle="bold" />
 
@@ -49,13 +49,13 @@
                     android:layout_centerVertical="true"
                     android:contentDescription="Filtro por mes"
                     android:text="Octubre 2026"
-                    android:textColor="#0F172A"
+                    android:textColor="@color/text_dark"
                     android:textSize="13sp"
                     app:icon="@android:drawable/ic_menu_my_calendar"
                     app:iconGravity="textStart"
                     app:iconPadding="6dp"
-                    app:iconTint="#0F172A"
-                    app:strokeColor="#CBD5E1"
+                    app:iconTint="@color/text_dark"
+                    app:strokeColor="@color/card_border"
                     app:strokeWidth="1dp" />
 
             </RelativeLayout>
@@ -84,10 +84,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
-                app:cardBackgroundColor="#FFFFFF"
+                app:cardBackgroundColor="@color/card_bg"
                 app:cardCornerRadius="16dp"
                 app:cardElevation="2dp"
-                app:strokeColor="#E2E8F0"
+                app:strokeColor="@color/card_border"
                 app:strokeWidth="1dp">
 
                 <LinearLayout
@@ -104,7 +104,7 @@
                         android:layout_marginEnd="12dp"
                         android:contentDescription="Ícono Resumen"
                         android:src="@android:drawable/ic_menu_compass"
-                        app:tint="#22C55E" />
+                        app:tint="@color/success" />
 
                     <LinearLayout
                         android:layout_width="0dp"
@@ -117,7 +117,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Resumen Mensual"
-                            android:textColor="#64748B"
+                            android:textColor="@color/text_muted"
                             android:textSize="12sp"
                             android:textStyle="bold" />
 
@@ -127,7 +127,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="2dp"
                             android:text="24 de 31 días registrados esta semana (77% consistencia)"
-                            android:textColor="#0F172A"
+                            android:textColor="@color/text_dark"
                             android:textSize="14sp"
                             android:textStyle="bold" />
 
@@ -143,7 +143,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="12dp"
                 android:text="Registros Diarios"
-                android:textColor="#0F172A"
+                android:textColor="@color/text_dark"
                 android:textSize="16sp"
                 android:textStyle="bold" />
 
@@ -166,8 +166,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:background="#FFFFFF"
+        android:background="@color/card_bg"
         app:elevation="8dp"
+        app:itemIconTint="@color/text_muted"
+        app:itemTextColor="@color/text_muted"
         app:menu="@menu/bottom_nav_menu" />
 
 </RelativeLayout>

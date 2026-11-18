@@ -7,8 +7,8 @@
     android:layout_marginBottom="12dp"
     app:cardCornerRadius="16dp"
     app:cardElevation="2dp"
-    app:cardBackgroundColor="#FFFFFF"
-    app:strokeColor="#E2E8F0"
+    app:cardBackgroundColor="@color/card_bg"
+    app:strokeColor="@color/card_border"
     app:strokeWidth="1dp">
 
     <LinearLayout
@@ -21,7 +21,7 @@
             android:id="@+id/viewRiesgoBadge"
             android:layout_width="6dp"
             android:layout_height="match_parent"
-            android:background="#22C55E" />
+            android:background="@color/success" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -42,7 +42,7 @@
                     android:layout_alignParentStart="true"
                     android:layout_centerVertical="true"
                     android:text="Hoy - 08 Octubre"
-                    android:textColor="#0F172A"
+                    android:textColor="@color/text_dark"
                     android:textSize="16sp"
                     android:textStyle="bold" />
 
@@ -56,7 +56,7 @@
                     android:paddingHorizontal="10dp"
                     android:paddingVertical="4dp"
                     android:text="Riesgo Bajo"
-                    android:textColor="#22C55E"
+                    android:textColor="@color/success"
                     android:textSize="12sp"
                     android:textStyle="bold" />
 
@@ -69,7 +69,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
                 android:text="Sueño 7.5h • Estrés 4/10 • Ánimo 🙂 Bien"
-                android:textColor="#334155"
+                android:textColor="@color/text_body"
                 android:textSize="14sp" />
 
             <!-- Tags -->
@@ -78,7 +78,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="#Trabajo #Ejercicio"
-                android:textColor="#64748B"
+                android:textColor="@color/text_muted"
                 android:textSize="13sp"
                 android:textStyle="italic" />
 
