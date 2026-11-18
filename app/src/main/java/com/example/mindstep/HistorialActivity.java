@@ -43,15 +43,37 @@ public class HistorialActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        androidx.core.view.WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
         setContentView(R.layout.activity_historial);
 
         dbHelper = new DB(this);
 
         initViews();
+        setupAdaptacionPantalla();
         setupToolbar();
         setupResumenMensual();
         setupRecyclerView();
         setupBottomNavigation();
+    }
+
+    private void setupAdaptacionPantalla() {
+        View root = findViewById(R.id.rootHistorial);
+        if (root != null) {
+            androidx.core.view.ViewCompat.setOnApplyWindowInsetsListener(root, (v, insets) -> {
+                int statusBar = insets.getInsets(androidx.core.view.WindowInsetsCompat.Type.statusBars()).top;
+                int navBar = insets.getInsets(androidx.core.view.WindowInsetsCompat.Type.navigationBars()).bottom;
+
+                View header = findViewById(R.id.appBarLayout);
+                if (header != null) {
+                    header.setPadding(header.getPaddingLeft(), statusBar, header.getPaddingRight(), header.getPaddingBottom());
+                }
+
+                if (bottomNavigation != null) {
+                    bottomNavigation.setPadding(bottomNavigation.getPaddingLeft(), bottomNavigation.getPaddingTop(), bottomNavigation.getPaddingRight(), navBar);
+                }
+                return insets;
+            });
+        }
     }
 
     @Override

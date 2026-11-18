@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/rootAsistente"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/bg_screen"
@@ -9,6 +10,7 @@
 
     <!-- Header con botón atrás -->
     <LinearLayout
+        android:id="@+id/headerAsistente"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="@color/card_bg"
@@ -144,6 +146,7 @@
 
     <!-- Barra de Entrada de Texto -->
     <LinearLayout
+        android:id="@+id/containerInputAsistente"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/card_bg"

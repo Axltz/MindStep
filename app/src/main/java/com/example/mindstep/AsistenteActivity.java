@@ -51,15 +51,38 @@ public class AsistenteActivity extends AppCompatActivity implements ChatAdapter.
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        androidx.core.view.WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
         setContentView(R.layout.activity_asistente);
 
         preferencesManager = new PreferencesManager(this);
         geminiService = new GeminiAssistantService();
 
         initViews();
+        setupAdaptacionPantalla();
         setupRecyclerView();
         iniciarConversacion();
         setupListeners();
+    }
+
+    private void setupAdaptacionPantalla() {
+        View root = findViewById(R.id.rootAsistente);
+        if (root != null) {
+            androidx.core.view.ViewCompat.setOnApplyWindowInsetsListener(root, (v, insets) -> {
+                int statusBar = insets.getInsets(androidx.core.view.WindowInsetsCompat.Type.statusBars()).top;
+                int navBar = insets.getInsets(androidx.core.view.WindowInsetsCompat.Type.navigationBars()).bottom;
+
+                View header = findViewById(R.id.headerAsistente);
+                if (header != null) {
+                    header.setPadding(header.getPaddingLeft(), statusBar + 8, header.getPaddingRight(), 8);
+                }
+
+                View inputContainer = findViewById(R.id.containerInputAsistente);
+                if (inputContainer != null) {
+                    inputContainer.setPadding(inputContainer.getPaddingLeft(), 12, inputContainer.getPaddingRight(), navBar + 16);
+                }
+                return insets;
+            });
+        }
     }
 
     private void initViews() {
@@ -159,16 +182,13 @@ public class AsistenteActivity extends AppCompatActivity implements ChatAdapter.
 
             @Override
             public void onError(String mensajeError) {
-                GenerativeEngine.ResultadoAI local = GenerativeEngine.resolverLocalSiExiste(texto, nombre, riesgo, new ArrayList<>());
-                if (local == null) {
-                    local = GenerativeEngine.generarFallbackDesconectado(nombre, riesgo);
-                }
+                String errorVisual = "Estoy aquí contigo. Si necesitas regularte ahora mismo, podemos hacer una pausa guiada de respiración o anclaje.";
                 listaMensajes.add(new ChatMessage(
-                        local.texto,
+                        errorVisual,
                         true,
                         obtenerHoraActual(),
-                        local.sugiereEjercicio,
-                        local.tipoEjercicio
+                        false,
+                        0
                 ));
                 chatAdapter.notifyItemInserted(listaMensajes.size() - 1);
                 rvChatMensajes.smoothScrollToPosition(listaMensajes.size() - 1);

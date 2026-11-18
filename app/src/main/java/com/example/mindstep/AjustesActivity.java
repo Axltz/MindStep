@@ -14,6 +14,9 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowCompat;
+import androidx.core.view.WindowInsetsCompat;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.button.MaterialButton;
@@ -59,15 +62,37 @@ public class AjustesActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
         setContentView(R.layout.activity_ajustes);
 
         preferencesManager = new PreferencesManager(this);
         dbHelper = new DB(this);
 
         initViews();
+        setupAdaptacionPantalla();
         cargarPreferencias();
         setupListeners();
         setupBottomNavigation();
+    }
+
+    private void setupAdaptacionPantalla() {
+        View root = findViewById(R.id.rootAjustes);
+        if (root != null) {
+            ViewCompat.setOnApplyWindowInsetsListener(root, (v, insets) -> {
+                int statusBar = insets.getInsets(WindowInsetsCompat.Type.statusBars()).top;
+                int navBar = insets.getInsets(WindowInsetsCompat.Type.navigationBars()).bottom;
+
+                View header = findViewById(R.id.headerAjustes);
+                if (header != null) {
+                    header.setPadding(header.getPaddingLeft(), statusBar, header.getPaddingRight(), header.getPaddingBottom());
+                }
+
+                if (bottomNavigation != null) {
+                    bottomNavigation.setPadding(bottomNavigation.getPaddingLeft(), bottomNavigation.getPaddingTop(), bottomNavigation.getPaddingRight(), navBar);
+                }
+                return insets;
+            });
+        }
     }
 
     @Override

@@ -32,13 +32,35 @@ public class EstadisticasActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        androidx.core.view.WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
         setContentView(R.layout.activity_estadisticas);
 
         dbHelper = new DB(this);
 
         initViews();
+        setupAdaptacionPantalla();
         setupToggleGroup();
         setupBottomNavigation();
+    }
+
+    private void setupAdaptacionPantalla() {
+        android.view.View root = findViewById(R.id.rootEstadisticas);
+        if (root != null) {
+            androidx.core.view.ViewCompat.setOnApplyWindowInsetsListener(root, (v, insets) -> {
+                int statusBar = insets.getInsets(androidx.core.view.WindowInsetsCompat.Type.statusBars()).top;
+                int navBar = insets.getInsets(androidx.core.view.WindowInsetsCompat.Type.navigationBars()).bottom;
+
+                android.view.View header = findViewById(R.id.headerEstadisticas);
+                if (header != null) {
+                    header.setPadding(header.getPaddingLeft(), statusBar, header.getPaddingRight(), header.getPaddingBottom());
+                }
+
+                if (bottomNavigation != null) {
+                    bottomNavigation.setPadding(bottomNavigation.getPaddingLeft(), bottomNavigation.getPaddingTop(), bottomNavigation.getPaddingRight(), navBar);
+                }
+                return insets;
+            });
+        }
     }
 
     @Override
