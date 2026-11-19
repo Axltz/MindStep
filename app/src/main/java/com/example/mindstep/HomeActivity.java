@@ -105,25 +105,25 @@ public class HomeActivity extends AppCompatActivity {
         int score = preferencesManager.getLastScore();
 
         if ("Elevado".equalsIgnoreCase(riesgo)) {
-            cardNivelRiesgo.setCardBackgroundColor(Color.parseColor("#FEF2F2"));
-            cardNivelRiesgo.setStrokeColor(Color.parseColor("#FECACA"));
+            cardNivelRiesgo.setCardBackgroundColor(androidx.core.content.ContextCompat.getColor(this, R.color.danger_light));
+            cardNivelRiesgo.setStrokeColor(androidx.core.content.ContextCompat.getColor(this, R.color.danger));
             tvBadgeRiesgo.setText("● NIVEL DE RIESGO: ELEVADO (" + score + " pts)");
-            tvBadgeRiesgo.setTextColor(Color.parseColor("#EF4444"));
-            ivIconoRiesgo.setColorFilter(Color.parseColor("#EF4444"));
+            tvBadgeRiesgo.setTextColor(androidx.core.content.ContextCompat.getColor(this, R.color.danger));
+            ivIconoRiesgo.setColorFilter(androidx.core.content.ContextCompat.getColor(this, R.color.danger));
             tvMensajeRiesgo.setText("Sobrecarga alta detectada. Toca aquí para que el Asistente te guíe a regular tu tensión.");
         } else if ("Moderado".equalsIgnoreCase(riesgo)) {
-            cardNivelRiesgo.setCardBackgroundColor(Color.parseColor("#FFFBEB"));
-            cardNivelRiesgo.setStrokeColor(Color.parseColor("#FDE68A"));
+            cardNivelRiesgo.setCardBackgroundColor(androidx.core.content.ContextCompat.getColor(this, R.color.warning_light));
+            cardNivelRiesgo.setStrokeColor(androidx.core.content.ContextCompat.getColor(this, R.color.warning));
             tvBadgeRiesgo.setText("● NIVEL DE RIESGO: MODERADO (" + score + " pts)");
-            tvBadgeRiesgo.setTextColor(Color.parseColor("#F59E0B"));
-            ivIconoRiesgo.setColorFilter(Color.parseColor("#F59E0B"));
+            tvBadgeRiesgo.setTextColor(androidx.core.content.ContextCompat.getColor(this, R.color.warning));
+            ivIconoRiesgo.setColorFilter(androidx.core.content.ContextCompat.getColor(this, R.color.warning));
             tvMensajeRiesgo.setText("Tu ritmo diario muestra tensión o descanso justo. Toca aquí para ver consejos.");
         } else {
-            cardNivelRiesgo.setCardBackgroundColor(Color.parseColor("#F0FDF4"));
-            cardNivelRiesgo.setStrokeColor(Color.parseColor("#BBF7D0"));
+            cardNivelRiesgo.setCardBackgroundColor(androidx.core.content.ContextCompat.getColor(this, R.color.success_light));
+            cardNivelRiesgo.setStrokeColor(androidx.core.content.ContextCompat.getColor(this, R.color.success));
             tvBadgeRiesgo.setText("● NIVEL DE RIESGO: BAJO / ESTABLE (" + score + " pts)");
-            tvBadgeRiesgo.setTextColor(Color.parseColor("#22C55E"));
-            ivIconoRiesgo.setColorFilter(Color.parseColor("#22C55E"));
+            tvBadgeRiesgo.setTextColor(androidx.core.content.ContextCompat.getColor(this, R.color.success));
+            ivIconoRiesgo.setColorFilter(androidx.core.content.ContextCompat.getColor(this, R.color.success));
             tvMensajeRiesgo.setText("Tus hábitos de sueño y presión se mantienen en equilibrio hoy.");
         }
     }

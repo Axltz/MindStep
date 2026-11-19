@@ -120,7 +120,19 @@ public class AjustesActivity extends AppCompatActivity {
 
         switchRecordatorio.setChecked(preferencesManager.isRemindersEnabled());
         switchAlertaEstres.setChecked(preferencesManager.isStressAlertEnabled());
+
+        switchModoOscuro.setOnCheckedChangeListener(null);
         switchModoOscuro.setChecked(preferencesManager.isDarkMode());
+        switchModoOscuro.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (preferencesManager.isDarkMode() != isChecked) {
+                preferencesManager.setDarkMode(isChecked);
+                if (isChecked) {
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+                } else {
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+                }
+            }
+        });
     }
 
     private void setupListeners() {
@@ -138,16 +150,6 @@ public class AjustesActivity extends AppCompatActivity {
         switchAlertaEstres.setOnCheckedChangeListener((buttonView, isChecked) -> {
             preferencesManager.setStressAlertEnabled(isChecked);
             Toast.makeText(this, isChecked ? "Alertas preventivas de sobrecarga activadas" : "Alertas desactivadas", Toast.LENGTH_SHORT).show();
-        });
-
-        // Switch Modo Oscuro Funcional con persistencia
-        switchModoOscuro.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            preferencesManager.setDarkMode(isChecked);
-            if (isChecked) {
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-            } else {
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-            }
         });
 
         itemIdioma.setOnClickListener(v -> mostrarSelectorIdioma());
