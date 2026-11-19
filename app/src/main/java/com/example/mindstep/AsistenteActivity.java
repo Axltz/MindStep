@@ -51,38 +51,15 @@ public class AsistenteActivity extends AppCompatActivity implements ChatAdapter.
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        androidx.core.view.WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
         setContentView(R.layout.activity_asistente);
 
         preferencesManager = new PreferencesManager(this);
         geminiService = new GeminiAssistantService();
 
         initViews();
-        setupAdaptacionPantalla();
         setupRecyclerView();
         iniciarConversacion();
         setupListeners();
-    }
-
-    private void setupAdaptacionPantalla() {
-        View root = findViewById(R.id.rootAsistente);
-        if (root != null) {
-            androidx.core.view.ViewCompat.setOnApplyWindowInsetsListener(root, (v, insets) -> {
-                int statusBar = insets.getInsets(androidx.core.view.WindowInsetsCompat.Type.statusBars()).top;
-                int navBar = insets.getInsets(androidx.core.view.WindowInsetsCompat.Type.navigationBars()).bottom;
-
-                View header = findViewById(R.id.headerAsistente);
-                if (header != null) {
-                    header.setPadding(header.getPaddingLeft(), statusBar + 8, header.getPaddingRight(), 8);
-                }
-
-                View inputContainer = findViewById(R.id.containerInputAsistente);
-                if (inputContainer != null) {
-                    inputContainer.setPadding(inputContainer.getPaddingLeft(), 12, inputContainer.getPaddingRight(), navBar + 16);
-                }
-                return insets;
-            });
-        }
     }
 
     private void initViews() {

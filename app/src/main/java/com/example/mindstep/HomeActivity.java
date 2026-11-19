@@ -47,35 +47,13 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
         setContentView(R.layout.activity_home);
 
         preferencesManager = new PreferencesManager(this);
 
         initViews();
-        setupAdaptacionPantalla();
         setupEvents();
         setupBottomNavigation();
-    }
-
-    private void setupAdaptacionPantalla() {
-        View root = findViewById(R.id.rootHome);
-        if (root != null) {
-            ViewCompat.setOnApplyWindowInsetsListener(root, (v, insets) -> {
-                int statusBar = insets.getInsets(WindowInsetsCompat.Type.statusBars()).top;
-                int navBar = insets.getInsets(WindowInsetsCompat.Type.navigationBars()).bottom;
-
-                View header = findViewById(R.id.headerHome);
-                if (header != null) {
-                    header.setPadding(header.getPaddingLeft(), statusBar, header.getPaddingRight(), header.getPaddingBottom());
-                }
-
-                if (bottomNavigation != null) {
-                    bottomNavigation.setPadding(bottomNavigation.getPaddingLeft(), bottomNavigation.getPaddingTop(), bottomNavigation.getPaddingRight(), navBar);
-                }
-                return insets;
-            });
-        }
     }
 
     @Override
