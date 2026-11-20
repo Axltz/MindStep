@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <application
+        android:allowBackup="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.MindStep">
+
+        <!-- Actividad Principal de Inicio / Bienvenida (Launcher) -->
+        <activity
+            android:name=".BienvenidaActivity"
+            android:exported="true"
+            android:label="@string/app_name"
+            android:theme="@style/Theme.MindStep"
+            android:windowSoftInputMode="adjustResize">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <!-- Evaluación Diagnóstica Inicial -->
+        <activity
+            android:name=".EvaluacionActivity"
+            android:exported="false"
+            android:theme="@style/Theme.MindStep" />
+
+        <!-- Home / Panel Central -->
+        <activity
+            android:name=".HomeActivity"
+            android:exported="false"
+            android:theme="@style/Theme.MindStep" />
+
+        <!-- Registro Diario de Hábitos -->
+        <activity
+            android:name=".RegistroHabitosActivity"
+            android:exported="false"
+            android:theme="@style/Theme.MindStep"
+            android:windowSoftInputMode="adjustResize" />
+
+        <!-- Historial de Bienestar -->
+        <activity
+            android:name=".HistorialActivity"
+            android:exported="false"
+            android:theme="@style/Theme.MindStep" />
+
+        <!-- Estadísticas y Patrones -->
+        <activity
+            android:name=".EstadisticasActivity"
+            android:exported="false"
+            android:theme="@style/Theme.MindStep" />
+
+        <!-- Asistente de Apoyo Preventivo -->
+        <activity
+            android:name=".AsistenteActivity"
+            android:exported="false"
+            android:theme="@style/Theme.MindStep" />
+
+        <!-- Ajustes y Configuración -->
+        <activity
+            android:name=".AjustesActivity"
+            android:exported="false"
+            android:theme="@style/Theme.MindStep" />
+
+    </application>
+
+</manifest>
