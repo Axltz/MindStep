@@ -27,9 +27,10 @@
             app:tint="@color/text_dark" />
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
+            android:layout_weight="1"
             android:orientation="vertical">
 
             <TextView
@@ -41,215 +42,142 @@
                 android:textStyle="bold" />
 
             <TextView
+                android:id="@+id/tvEstadoAsistente"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Basado en Árbol de Decisiones • En línea"
+                android:text="● En línea • TCC y Regulación Emocional"
                 android:textColor="@color/success"
-                android:textSize="12sp" />
+                android:textSize="11sp" />
         </LinearLayout>
     </LinearLayout>
 
-    <ScrollView
-        android:id="@+id/scrollChat"
+    <!-- Lista de Mensajes del Chat -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvChatMensajes"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fillViewport="true">
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:clipToPadding="false"
+        android:paddingHorizontal="16dp"
+        android:paddingTop="12dp"
+        android:paddingBottom="8dp" />
+
+    <!-- Carrusel Horizontal de Respuestas Rápidas -->
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/card_bg"
+        android:paddingHorizontal="12dp"
+        android:paddingVertical="8dp"
+        android:scrollbars="none">
 
         <LinearLayout
-            android:id="@+id/layoutMensajesChat"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="20dp">
+            android:orientation="horizontal">
 
-            <!-- Mensaje 1 del Asistente -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                android:orientation="horizontal">
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/chipRespiracion"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="wrap_content"
+                android:layout_height="38dp"
+                android:layout_marginEnd="8dp"
+                android:text="🌬️ Respiración 4-7-8"
+                android:textAllCaps="false"
+                android:textColor="@color/primary"
+                android:textSize="12sp"
+                app:cornerRadius="16dp"
+                app:strokeColor="@color/primary" />
 
-                <ImageView
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
-                    android:layout_marginEnd="10dp"
-                    android:src="@drawable/ic_leaf"
-                    app:tint="@color/primary" />
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/chipAnsiedad"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="wrap_content"
+                android:layout_height="38dp"
+                android:layout_marginEnd="8dp"
+                android:text="⚡ Siento mucha Ansiedad"
+                android:textAllCaps="false"
+                android:textColor="@color/primary"
+                android:textSize="12sp"
+                app:cornerRadius="16dp"
+                app:strokeColor="@color/primary" />
 
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/bg_chat_bot"
-                    android:maxWidth="280dp"
-                    android:orientation="vertical"
-                    android:padding="16dp">
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/chipExamenes"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="wrap_content"
+                android:layout_height="38dp"
+                android:layout_marginEnd="8dp"
+                android:text="📚 Sobrecarga de Exámenes"
+                android:textAllCaps="false"
+                android:textColor="@color/primary"
+                android:textSize="12sp"
+                app:cornerRadius="16dp"
+                app:strokeColor="@color/primary" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="4dp"
-                        android:text="MindStep"
-                        android:textColor="@color/primary"
-                        android:textSize="12sp"
-                        android:textStyle="bold" />
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/chipSueno"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="wrap_content"
+                android:layout_height="38dp"
+                android:layout_marginEnd="8dp"
+                android:text="🌙 No puedo dormir"
+                android:textAllCaps="false"
+                android:textColor="@color/primary"
+                android:textSize="12sp"
+                app:cornerRadius="16dp"
+                app:strokeColor="@color/primary" />
 
-                    <TextView
-                        android:id="@+id/tvMensajeInicialBot"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:lineSpacingExtra="2dp"
-                        android:text="Hola Axel. He detectado un nivel de estrés elevado (8/10) y pocas horas de sueño. ¿Cuál es el factor principal que te afecta en este momento?"
-                        android:textColor="@color/text_body"
-                        android:textSize="14sp" />
-                </LinearLayout>
-            </LinearLayout>
-
-            <!-- Opciones del Árbol de Decisiones (Alineadas a la derecha) -->
-            <LinearLayout
-                android:id="@+id/layoutOpcionesDecision"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp"
-                android:gravity="end"
-                android:orientation="vertical">
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btnOpcionTrabajo"
-                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
-                    android:text="Carga de Trabajo / Escuela"
-                    android:textAllCaps="false"
-                    android:textColor="@color/primary"
-                    android:textSize="13sp"
-                    app:cornerRadius="16dp"
-                    app:strokeColor="@color/primary" />
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btnOpcionAnsiedad"
-                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
-                    android:text="Ansiedad / Pensamientos Rumiantes"
-                    android:textAllCaps="false"
-                    android:textColor="@color/primary"
-                    android:textSize="13sp"
-                    app:cornerRadius="16dp"
-                    app:strokeColor="@color/primary" />
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btnOpcionAgotamiento"
-                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Agotamiento Físico"
-                    android:textAllCaps="false"
-                    android:textColor="@color/primary"
-                    android:textSize="13sp"
-                    app:cornerRadius="16dp"
-                    app:strokeColor="@color/primary" />
-            </LinearLayout>
-
-            <!-- Respuesta del Usuario (se muestra al elegir opción) -->
-            <LinearLayout
-                android:id="@+id/layoutRespuestaUsuario"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                android:gravity="end"
-                android:orientation="horizontal"
-                android:visibility="gone">
-
-                <TextView
-                    android:id="@+id/tvRespuestaUsuarioTexto"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/bg_chat_user"
-                    android:maxWidth="260dp"
-                    android:paddingHorizontal="16dp"
-                    android:paddingVertical="12dp"
-                    android:text="Carga de Trabajo / Escuela"
-                    android:textColor="@color/white"
-                    android:textSize="14sp" />
-            </LinearLayout>
-
-            <!-- Tarjeta de Ejercicio Recomendado -->
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/cardEjercicioRecomendado"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="24dp"
-                android:visibility="gone"
-                app:cardBackgroundColor="#F0FDF4"
-                app:cardCornerRadius="20dp"
-                app:cardElevation="2dp"
-                app:strokeColor="#BBF7D0"
-                app:strokeWidth="1.5dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="20dp">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal">
-
-                        <ImageView
-                            android:layout_width="28dp"
-                            android:layout_height="28dp"
-                            android:src="@drawable/ic_leaf"
-                            app:tint="@color/success" />
-
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="10dp"
-                            android:orientation="vertical">
-
-                            <TextView
-                                android:id="@+id/tvTituloEjercicioCard"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Ejercicio Recomendado:\nRespiración 4-7-8"
-                                android:textColor="@color/text_dark"
-                                android:textSize="16sp"
-                                android:textStyle="bold" />
-                        </LinearLayout>
-                    </LinearLayout>
-
-                    <TextView
-                        android:id="@+id/tvDescripcionEjercicioCard"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:layout_marginBottom="16dp"
-                        android:lineSpacingExtra="2dp"
-                        android:text="Una técnica de 2 minutos para reducir el ritmo cardíaco y calmar el sistema nervioso."
-                        android:textColor="@color/text_body"
-                        android:textSize="13sp" />
-
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/btnIniciarEjercicio"
-                        android:layout_width="match_parent"
-                        android:layout_height="52dp"
-                        android:backgroundTint="#059669"
-                        android:text="Iniciar Ejercicio Guiado Ahora"
-                        android:textAllCaps="false"
-                        android:textColor="@color/white"
-                        android:textSize="14sp"
-                        android:textStyle="bold"
-                        app:cornerRadius="14dp" />
-                </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
-
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/chipBurnout"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="wrap_content"
+                android:layout_height="38dp"
+                android:text="😫 Me siento con Burnout"
+                android:textAllCaps="false"
+                android:textColor="@color/primary"
+                android:textSize="12sp"
+                app:cornerRadius="16dp"
+                app:strokeColor="@color/primary" />
         </LinearLayout>
-    </ScrollView>
+    </HorizontalScrollView>
+
+    <!-- Barra de Entrada de Texto -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/card_bg"
+        android:elevation="8dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="10dp">
+
+        <EditText
+            android:id="@+id/etMensajeUsuario"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:layout_weight="1"
+            android:background="@drawable/bg_option_unselected"
+            android:hint="Escribe cómo te sientes..."
+            android:imeOptions="actionSend"
+            android:inputType="textCapSentences|textMultiLine"
+            android:maxLines="3"
+            android:paddingHorizontal="16dp"
+            android:paddingVertical="12dp"
+            android:textColor="@color/text_dark"
+            android:textColorHint="@color/text_muted"
+            android:textSize="14sp" />
+
+        <ImageButton
+            android:id="@+id/btnEnviarMensaje"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="@drawable/bg_chat_user"
+            android:contentDescription="Enviar mensaje"
+            android:src="@drawable/ic_arrow_forward"
+            app:tint="@color/white" />
+    </LinearLayout>
 
 </LinearLayout>
