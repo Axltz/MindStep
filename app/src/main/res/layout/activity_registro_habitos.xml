@@ -109,6 +109,14 @@
                         app:thumbColor="@color/primary"
                         app:trackColorActive="@color/primary"
                         app:trackColorInactive="@color/card_border" />
+
+                    <TextView
+                        android:id="@+id/tvFeedbackSueno"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="✅ Rango óptimo y reparador para tu jornada."
+                        android:textColor="@color/success"
+                        android:textSize="12sp" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
@@ -132,7 +140,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="⚡ Nivel de Estrés Hoy"
+                        android:text="⚡ Nivel de Estrés Percibido"
                         android:textColor="@color/text_muted"
                         android:textSize="13sp"
                         android:textStyle="bold" />
@@ -158,6 +166,14 @@
                         app:thumbColor="@color/warning"
                         app:trackColorActive="@color/warning"
                         app:trackColorInactive="@color/card_border" />
+
+                    <TextView
+                        android:id="@+id/tvFeedbackEstres"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="⚡ Tensión manejable. Mantén pausas activas."
+                        android:textColor="@color/warning"
+                        android:textSize="12sp" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
@@ -182,7 +198,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="12dp"
-                        android:text="💭 ¿Cómo te sientes en general?"
+                        android:text="💭 Estado de ánimo predominante"
                         android:textColor="@color/text_muted"
                         android:textSize="13sp"
                         android:textStyle="bold" />
@@ -193,7 +209,6 @@
                         android:gravity="center"
                         android:orientation="horizontal">
 
-                        <!-- Emojis -->
                         <TextView
                             android:id="@+id/tvAnimoExcelente"
                             android:layout_width="0dp"
@@ -254,7 +269,7 @@
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- 4. Actividad Física -->
+            <!-- 4. Detonantes / Etiquetas del Día -->
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -274,6 +289,86 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:text="🏷️ Factores o Detonantes del Día"
+                        android:textColor="@color/text_muted"
+                        android:textSize="13sp"
+                        android:textStyle="bold" />
+
+                    <com.google.android.material.chip.ChipGroup
+                        android:id="@+id/chipGroupDetonantes"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/chipExamenes"
+                            style="@style/Widget.MaterialComponents.Chip.Filter"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:checked="true"
+                            android:text="#Exámenes" />
+
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/chipTareas"
+                            style="@style/Widget.MaterialComponents.Chip.Filter"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="#Tareas" />
+
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/chipTrabajo"
+                            style="@style/Widget.MaterialComponents.Chip.Filter"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:checked="true"
+                            android:text="#Trabajo" />
+
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/chipInsomnio"
+                            style="@style/Widget.MaterialComponents.Chip.Filter"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="#Insomnio" />
+
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/chipEjercicio"
+                            style="@style/Widget.MaterialComponents.Chip.Filter"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:checked="true"
+                            android:text="#Ejercicio" />
+
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/chipSocial"
+                            style="@style/Widget.MaterialComponents.Chip.Filter"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="#Social" />
+                    </com.google.android.material.chip.ChipGroup>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- 5. Hábitos Físicos (Actividad, Hidratación, Pantalla) -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                app:cardBackgroundColor="@color/card_bg"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="1dp"
+                app:strokeColor="@color/card_border"
+                app:strokeWidth="1dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <!-- Actividad Física -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:text="🏃 Actividad física"
                         android:textColor="@color/text_muted"
                         android:textSize="13sp"
@@ -283,10 +378,10 @@
                         android:id="@+id/tvValorActividad"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginVertical="6dp"
+                        android:layout_marginVertical="4dp"
                         android:text="45 min"
                         android:textColor="@color/primary"
-                        android:textSize="22sp"
+                        android:textSize="20sp"
                         android:textStyle="bold" />
 
                     <com.google.android.material.slider.Slider
@@ -300,29 +395,12 @@
                         app:thumbColor="@color/primary"
                         app:trackColorActive="@color/primary"
                         app:trackColorInactive="@color/card_border" />
-                </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
 
-            <!-- 5. Hidratación -->
-            <com.google.android.material.card.MaterialCardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                app:cardBackgroundColor="@color/card_bg"
-                app:cardCornerRadius="16dp"
-                app:cardElevation="1dp"
-                app:strokeColor="@color/card_border"
-                app:strokeWidth="1dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="16dp">
-
+                    <!-- Hidratación -->
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
                         android:text="💧 Hidratación"
                         android:textColor="@color/text_muted"
                         android:textSize="13sp"
@@ -332,10 +410,10 @@
                         android:id="@+id/tvValorAgua"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginVertical="6dp"
+                        android:layout_marginVertical="4dp"
                         android:text="2.1 L"
                         android:textColor="@color/primary"
-                        android:textSize="22sp"
+                        android:textSize="20sp"
                         android:textStyle="bold" />
 
                     <com.google.android.material.slider.Slider
@@ -349,10 +427,42 @@
                         app:thumbColor="@color/primary"
                         app:trackColorActive="@color/primary"
                         app:trackColorInactive="@color/card_border" />
+
+                    <!-- Tiempo de Pantalla -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="📱 Tiempo de pantalla"
+                        android:textColor="@color/text_muted"
+                        android:textSize="13sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tvValorPantalla"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginVertical="4dp"
+                        android:text="2.5 hrs"
+                        android:textColor="@color/primary"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+
+                    <com.google.android.material.slider.Slider
+                        android:id="@+id/sliderPantalla"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:stepSize="0.5"
+                        android:value="2.5"
+                        android:valueFrom="0.0"
+                        android:valueTo="12.0"
+                        app:thumbColor="@color/primary"
+                        app:trackColorActive="@color/primary"
+                        app:trackColorInactive="@color/card_border" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- 6. Tiempo de Pantalla -->
+            <!-- 6. Notas o Reflexión Breve -->
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -372,32 +482,24 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="📱 Tiempo de pantalla"
+                        android:layout_marginBottom="8dp"
+                        android:text="📝 Notas del Día / Reflexión Breve"
                         android:textColor="@color/text_muted"
                         android:textSize="13sp"
                         android:textStyle="bold" />
 
-                    <TextView
-                        android:id="@+id/tvValorPantalla"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginVertical="6dp"
-                        android:text="2.5 hrs"
-                        android:textColor="@color/primary"
-                        android:textSize="22sp"
-                        android:textStyle="bold" />
-
-                    <com.google.android.material.slider.Slider
-                        android:id="@+id/sliderPantalla"
+                    <EditText
+                        android:id="@+id/etNotasRegistro"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:stepSize="0.5"
-                        android:value="2.5"
-                        android:valueFrom="0.0"
-                        android:valueTo="12.0"
-                        app:thumbColor="@color/primary"
-                        app:trackColorActive="@color/primary"
-                        app:trackColorInactive="@color/card_border" />
+                        android:background="@drawable/bg_option_unselected"
+                        android:gravity="top"
+                        android:hint="¿Qué detonó tu estrés o qué te ayudó hoy? (Opcional)"
+                        android:lines="3"
+                        android:padding="12dp"
+                        android:textColor="@color/text_dark"
+                        android:textColorHint="@color/text_muted"
+                        android:textSize="14sp" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
@@ -417,7 +519,7 @@
             android:layout_width="match_parent"
             android:layout_height="54dp"
             android:backgroundTint="#059669"
-            android:text="Guardar Registro del Día"
+            android:text="Guardar Registro y Evaluar Bienestar"
             android:textAllCaps="false"
             android:textColor="@color/white"
             android:textSize="16sp"

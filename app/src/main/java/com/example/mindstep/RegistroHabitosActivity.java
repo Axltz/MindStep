@@ -6,6 +6,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -13,6 +14,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.chip.Chip;
 import com.google.android.material.slider.Slider;
 
 import java.text.SimpleDateFormat;
@@ -22,8 +24,8 @@ import java.util.Locale;
 /**
  * Pantalla 4: Registro Diario de Hábitos
  * Formulario interactivo con sliders para capturar métricas diarias
- * (sueño, estrés, ánimo, hidratación, actividad, pantalla) y generar
- * la puntuación de bienestar del día con almacenamiento en SQLite.
+ * (sueño, estrés, ánimo, hidratación, actividad, pantalla, notas y etiquetas)
+ * y generar la evaluación diaria de bienestar con almacenamiento en SQLite.
  */
 public class RegistroHabitosActivity extends AppCompatActivity {
 
@@ -31,12 +33,16 @@ public class RegistroHabitosActivity extends AppCompatActivity {
 
     private TextView tvValorSueno;
     private Slider sliderSueno;
+    private TextView tvFeedbackSueno;
 
     private TextView tvValorEstres;
     private Slider sliderEstres;
+    private TextView tvFeedbackEstres;
 
     private TextView tvAnimoExcelente, tvAnimoBien, tvAnimoRegular, tvAnimoMal, tvAnimoBurnout;
     private int animoSeleccionado = 1; // 0=Excelente, 1=Bien, 2=Regular, 3=Mal, 4=Burnout
+
+    private Chip chipExamenes, chipTareas, chipTrabajo, chipInsomnio, chipEjercicio, chipSocial;
 
     private TextView tvValorActividad;
     private Slider sliderActividad;
@@ -47,6 +53,7 @@ public class RegistroHabitosActivity extends AppCompatActivity {
     private TextView tvValorPantalla;
     private Slider sliderPantalla;
 
+    private EditText etNotasRegistro;
     private MaterialButton btnGuardarRegistro;
 
     private DB dbHelper;
@@ -69,15 +76,24 @@ public class RegistroHabitosActivity extends AppCompatActivity {
 
         tvValorSueno = findViewById(R.id.tvValorSueno);
         sliderSueno = findViewById(R.id.sliderSueno);
+        tvFeedbackSueno = findViewById(R.id.tvFeedbackSueno);
 
         tvValorEstres = findViewById(R.id.tvValorEstres);
         sliderEstres = findViewById(R.id.sliderEstres);
+        tvFeedbackEstres = findViewById(R.id.tvFeedbackEstres);
 
         tvAnimoExcelente = findViewById(R.id.tvAnimoExcelente);
         tvAnimoBien = findViewById(R.id.tvAnimoBien);
         tvAnimoRegular = findViewById(R.id.tvAnimoRegular);
         tvAnimoMal = findViewById(R.id.tvAnimoMal);
         tvAnimoBurnout = findViewById(R.id.tvAnimoBurnout);
+
+        chipExamenes = findViewById(R.id.chipExamenes);
+        chipTareas = findViewById(R.id.chipTareas);
+        chipTrabajo = findViewById(R.id.chipTrabajo);
+        chipInsomnio = findViewById(R.id.chipInsomnio);
+        chipEjercicio = findViewById(R.id.chipEjercicio);
+        chipSocial = findViewById(R.id.chipSocial);
 
         tvValorActividad = findViewById(R.id.tvValorActividad);
         sliderActividad = findViewById(R.id.sliderActividad);
@@ -88,29 +104,46 @@ public class RegistroHabitosActivity extends AppCompatActivity {
         tvValorPantalla = findViewById(R.id.tvValorPantalla);
         sliderPantalla = findViewById(R.id.sliderPantalla);
 
+        etNotasRegistro = findViewById(R.id.etNotasRegistro);
         btnGuardarRegistro = findViewById(R.id.btnGuardarRegistro);
     }
 
     private void setupListeners() {
         btnClose.setOnClickListener(v -> finish());
 
-        // Slider Sueño
+        // Slider Sueño con feedback en vivo
         sliderSueno.addOnChangeListener((slider, value, fromUser) -> {
             tvValorSueno.setText(String.format(Locale.US, "%.1f hrs", value));
+            if (value >= 7.0f && value <= 9.0f) {
+                tvFeedbackSueno.setText("✅ Rango óptimo y reparador para tu jornada.");
+                tvFeedbackSueno.setTextColor(Color.parseColor("#22C55E"));
+            } else if (value >= 6.0f) {
+                tvFeedbackSueno.setText("⚠️ Descanso justo. Intenta dormir 1 hora más hoy.");
+                tvFeedbackSueno.setTextColor(Color.parseColor("#F59E0B"));
+            } else {
+                tvFeedbackSueno.setText("🚨 Déficit de sueño severo: Aumenta tu vulnerabilidad al estrés.");
+                tvFeedbackSueno.setTextColor(Color.parseColor("#EF4444"));
+            }
         });
 
-        // Slider Estrés
+        // Slider Estrés con feedback en vivo
         sliderEstres.addOnChangeListener((slider, value, fromUser) -> {
             int val = (int) value;
             if (val <= 3) {
                 tvValorEstres.setText("● " + val + " / 10 (Leve)");
                 tvValorEstres.setTextColor(Color.parseColor("#22C55E"));
+                tvFeedbackEstres.setText("✅ Nivel de tensión bajo y controlado.");
+                tvFeedbackEstres.setTextColor(Color.parseColor("#22C55E"));
             } else if (val <= 6) {
                 tvValorEstres.setText("● " + val + " / 10 (Moderado)");
                 tvValorEstres.setTextColor(Color.parseColor("#F59E0B"));
+                tvFeedbackEstres.setText("⚡ Tensión manejable. Mantén pausas activas durante el día.");
+                tvFeedbackEstres.setTextColor(Color.parseColor("#F59E0B"));
             } else {
                 tvValorEstres.setText("● " + val + " / 10 (Elevado)");
                 tvValorEstres.setTextColor(Color.parseColor("#EF4444"));
+                tvFeedbackEstres.setText("🚨 Nivel crítico: Te sugerimos hablar con el Asistente Preventivo.");
+                tvFeedbackEstres.setTextColor(Color.parseColor("#EF4444"));
             }
         });
 
@@ -200,13 +233,28 @@ public class RegistroHabitosActivity extends AppCompatActivity {
 
         tvModalDesgloseSueno.setText("💤 " + res.desgloseSueno);
         tvModalDesgloseEstres.setText("⚡ " + res.desgloseEstres);
-        tvModalDisparador.setText("🏷️ Disparador " + res.disparadorPrincipal);
+
+        // Concatenar etiquetas de los chips seleccionados
+        StringBuilder tagsBuilder = new StringBuilder();
+        if (chipExamenes.isChecked()) tagsBuilder.append("#Exámenes ");
+        if (chipTareas.isChecked()) tagsBuilder.append("#Tareas ");
+        if (chipTrabajo.isChecked()) tagsBuilder.append("#Trabajo ");
+        if (chipInsomnio.isChecked()) tagsBuilder.append("#Insomnio ");
+        if (chipEjercicio.isChecked()) tagsBuilder.append("#Ejercicio ");
+        if (chipSocial.isChecked()) tagsBuilder.append("#Social ");
+
+        String tagsFinales = tagsBuilder.toString().trim();
+        if (tagsFinales.isEmpty()) {
+            tagsFinales = res.disparadorPrincipal;
+        }
+
+        tvModalDisparador.setText("🏷️ Detonantes: " + tagsFinales);
+
+        final String tagsParaGuardar = tagsFinales;
 
         btnModalCerrar.setOnClickListener(v -> {
-            // Guardar en la base de datos SQLite local
-            guardarRegistroEnBD(res, sueno, estres);
+            guardarRegistroEnBD(res, sueno, estres, tagsParaGuardar);
 
-            // Actualizar preferencias para el home
             preferencesManager.setLastScore(res.score);
             preferencesManager.setLastRisk(res.nivelRiesgo);
 
@@ -218,7 +266,7 @@ public class RegistroHabitosActivity extends AppCompatActivity {
         dialog.show();
     }
 
-    private void guardarRegistroEnBD(ValidadorMetricas.ResultadoCalculo res, float sueno, int estres) {
+    private void guardarRegistroEnBD(ValidadorMetricas.ResultadoCalculo res, float sueno, int estres, String tags) {
         try {
             SimpleDateFormat sdfDia = new SimpleDateFormat("dd MMMM", new Locale("es", "MX"));
             String fecha = sdfDia.format(new Date());
@@ -229,8 +277,7 @@ public class RegistroHabitosActivity extends AppCompatActivity {
 
             String[] animoNombres = {"😃 Excelente", "🙂 Bien", "😐 Regular", "🙁 Mal", "😫 Agotado"};
             String animoStr = "Ánimo " + animoNombres[animoSeleccionado];
-
-            String tags = res.disparadorPrincipal + " #Registro_Diario";
+            String notas = etNotasRegistro.getText().toString().trim();
 
             dbHelper.insertarRegistro(
                     fecha,
@@ -240,7 +287,8 @@ public class RegistroHabitosActivity extends AppCompatActivity {
                     suenoStr,
                     estresStr,
                     animoStr,
-                    tags
+                    tags,
+                    notas
             );
         } catch (Exception e) {
             e.printStackTrace();

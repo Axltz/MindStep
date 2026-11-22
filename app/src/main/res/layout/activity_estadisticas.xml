@@ -123,11 +123,12 @@
                             android:background="#2563EB" />
 
                         <TextView
+                            android:id="@+id/tvPromedioSuenoLeyenda"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="6dp"
                             android:layout_marginEnd="20dp"
-                            android:text="Sueño"
+                            android:text="Sueño (~7.2h)"
                             android:textColor="@color/text_muted"
                             android:textSize="13sp" />
 
@@ -137,10 +138,11 @@
                             android:background="#F97316" />
 
                         <TextView
+                            android:id="@+id/tvPromedioEstresLeyenda"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="6dp"
-                            android:text="Estrés"
+                            android:text="Estrés (~4.5/10)"
                             android:textColor="@color/text_muted"
                             android:textSize="13sp" />
                     </LinearLayout>
@@ -152,10 +154,11 @@
                         android:layout_height="180dp" />
 
                     <TextView
+                        android:id="@+id/tvPieGrafica"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
-                        android:text="Datos ilustrativos Octubre 2026"
+                        android:text="Datos basados en registros locales de SQLite"
                         android:textColor="@color/text_muted"
                         android:textSize="11sp" />
                 </LinearLayout>
@@ -194,18 +197,19 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Patrón Detectado"
+                            android:text="Patrón Detectado por Algoritmo"
                             android:textColor="#7E22CE"
                             android:textSize="16sp"
                             android:textStyle="bold" />
                     </LinearLayout>
 
                     <TextView
+                        android:id="@+id/tvTextoPatron"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:lineSpacingExtra="2dp"
-                        android:text="Menos de 6h de sueño aumentan tu estrés 45% al día siguiente."
+                        android:text="Menos de 6h de descanso incrementan tu nivel de tensión un 45% al día siguiente."
                         android:textColor="@color/text_dark"
                         android:textSize="14sp" />
                 </LinearLayout>
@@ -232,7 +236,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="16dp"
-                        android:text="Principales disparadores"
+                        android:text="Principales disparadores acumulados"
                         android:textColor="@color/text_dark"
                         android:textSize="16sp"
                         android:textStyle="bold" />
@@ -241,7 +245,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Carga Académica (52%)"
+                        android:text="Carga Académica / Exámenes (52%)"
                         android:textColor="@color/text_body"
                         android:textSize="13sp" />
 
@@ -260,7 +264,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Uso Pantallas (28%)"
+                        android:text="Sobrecarga de Pantallas (28%)"
                         android:textColor="@color/text_body"
                         android:textSize="13sp" />
 
@@ -279,7 +283,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Poco Descanso (20%)"
+                        android:text="Insomnio y Poco Descanso (20%)"
                         android:textColor="@color/text_body"
                         android:textSize="13sp" />
 

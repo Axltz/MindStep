@@ -98,24 +98,26 @@ public class HomeActivity extends AppCompatActivity {
 
         // Actualizar tarjeta según el último riesgo registrado
         String riesgo = preferencesManager.getLastRisk();
+        int score = preferencesManager.getLastScore();
+
         if ("Elevado".equalsIgnoreCase(riesgo)) {
             cardNivelRiesgo.setCardBackgroundColor(Color.parseColor("#FEF2F2"));
             cardNivelRiesgo.setStrokeColor(Color.parseColor("#FECACA"));
-            tvBadgeRiesgo.setText("● NIVEL DE RIESGO: ELEVADO");
+            tvBadgeRiesgo.setText("● NIVEL DE RIESGO: ELEVADO (" + score + " pts)");
             tvBadgeRiesgo.setTextColor(Color.parseColor("#EF4444"));
             ivIconoRiesgo.setColorFilter(Color.parseColor("#EF4444"));
-            tvMensajeRiesgo.setText("Se detectó alta sobrecarga de tensión. Te sugerimos hablar con el asistente.");
+            tvMensajeRiesgo.setText("Sobrecarga alta detectada. Toca aquí para que el Asistente te guíe a regular tu tensión.");
         } else if ("Moderado".equalsIgnoreCase(riesgo)) {
             cardNivelRiesgo.setCardBackgroundColor(Color.parseColor("#FFFBEB"));
             cardNivelRiesgo.setStrokeColor(Color.parseColor("#FDE68A"));
-            tvBadgeRiesgo.setText("● NIVEL DE RIESGO: MODERADO");
+            tvBadgeRiesgo.setText("● NIVEL DE RIESGO: MODERADO (" + score + " pts)");
             tvBadgeRiesgo.setTextColor(Color.parseColor("#F59E0B"));
             ivIconoRiesgo.setColorFilter(Color.parseColor("#F59E0B"));
-            tvMensajeRiesgo.setText("Tus niveles de descanso o estrés requieren atención preventiva hoy.");
+            tvMensajeRiesgo.setText("Tu ritmo diario muestra tensión o descanso justo. Toca aquí para ver consejos.");
         } else {
             cardNivelRiesgo.setCardBackgroundColor(Color.parseColor("#F0FDF4"));
             cardNivelRiesgo.setStrokeColor(Color.parseColor("#BBF7D0"));
-            tvBadgeRiesgo.setText("● NIVEL DE RIESGO: BAJO / ESTABLE");
+            tvBadgeRiesgo.setText("● NIVEL DE RIESGO: BAJO / ESTABLE (" + score + " pts)");
             tvBadgeRiesgo.setTextColor(Color.parseColor("#22C55E"));
             ivIconoRiesgo.setColorFilter(Color.parseColor("#22C55E"));
             tvMensajeRiesgo.setText("Tus hábitos de sueño y presión se mantienen en equilibrio hoy.");
@@ -123,6 +125,12 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void setupEvents() {
+        // Tocar la tarjeta de riesgo abre el asistente de apoyo
+        cardNivelRiesgo.setOnClickListener(v -> {
+            Intent intent = new Intent(HomeActivity.this, AsistenteActivity.class);
+            startActivity(intent);
+        });
+
         btnCapturarHabitos.setOnClickListener(v -> {
             Intent intent = new Intent(HomeActivity.this, RegistroHabitosActivity.class);
             startActivity(intent);
@@ -134,6 +142,11 @@ public class HomeActivity extends AppCompatActivity {
         });
 
         btnConfigRapida.setOnClickListener(v -> {
+            Intent intent = new Intent(HomeActivity.this, AjustesActivity.class);
+            startActivity(intent);
+        });
+
+        tvAvatarLetra.setOnClickListener(v -> {
             Intent intent = new Intent(HomeActivity.this, AjustesActivity.class);
             startActivity(intent);
         });
