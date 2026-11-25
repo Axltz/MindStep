@@ -31,7 +31,7 @@ import java.util.Locale;
 /**
  * Pantalla 7: Asistente de Apoyo Preventivo (Chatbot Conversacional Real)
  * Módulo de triaje interactivo basado en TCC para acompañar al usuario,
- * escuchar desahogos y proveer técnicas inmediatas de regulación.
+ * escuchar desahogos y proveer múltiples técnicas de regulación.
  */
 public class AsistenteActivity extends AppCompatActivity implements ChatAdapter.OnEjercicioClickListener {
 
@@ -49,6 +49,7 @@ public class AsistenteActivity extends AppCompatActivity implements ChatAdapter.
     private ChatAdapter chatAdapter;
     private List<ChatMessage> listaMensajes;
     private PreferencesManager preferencesManager;
+    private String ultimoTemaTratado = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,11 +93,11 @@ public class AsistenteActivity extends AppCompatActivity implements ChatAdapter.
 
         String mensajeBienvenida;
         if ("Elevado".equalsIgnoreCase(riesgo)) {
-            mensajeBienvenida = "Hola " + nombre + ". He detectado que tus últimos registros muestran un nivel de estrés elevado y pocas horas de sueño.\n\nEstoy aquí para escucharte y ayudarte a descomprimir la tensión. ¿Cómo te sientes en este instante?";
+            mensajeBienvenida = "Hola " + nombre + ". He detectado que tus últimos registros muestran un nivel de estrés elevado.\n\nEstoy aquí para escucharte y ayudarte a descomprimir la tensión. ¿Cómo te sientes en este instante?";
         } else if ("Moderado".equalsIgnoreCase(riesgo)) {
             mensajeBienvenida = "Hola " + nombre + ". Veo que tu ritmo diario ha estado algo agitado. ¿Cuál es la causa principal de esa presión hoy?";
         } else {
-            mensajeBienvenida = "¡Hola " + nombre + "! Tus hábitos se mantienen en equilibrio hoy. Recuerda que puedes escribirme para desahogarte, planear tus descansos o hacer ejercicios guiados de respiración.";
+            mensajeBienvenida = "¡Hola " + nombre + "! Tus hábitos se mantienen en equilibrio hoy. Recuerda que puedes escribirme para desahogarte, planear tus descansos o hacer ejercicios guiados.";
         }
 
         listaMensajes.add(new ChatMessage(mensajeBienvenida, true, horaActual));
@@ -120,8 +121,8 @@ public class AsistenteActivity extends AppCompatActivity implements ChatAdapter.
 
         // Chips de respuesta rápida
         chipRespiracion.setOnClickListener(v -> responderConChip("Quiero hacer el ejercicio de Respiración 4-7-8"));
-        chipAnsiedad.setOnClickListener(v -> responderConChip("Siento mucha ansiedad y el pecho apretado"));
-        chipExamenes.setOnClickListener(v -> responderConChip("Tengo demasiada sobrecarga de exámenes y tareas"));
+        chipAnsiedad.setOnClickListener(v -> responderConChip("Tengo pensamientos sobre el futuro que me dan ansiedad"));
+        chipExamenes.setOnClickListener(v -> responderConChip("Tengo sobrecarga de exámenes y tareas pendientes"));
         chipSueno.setOnClickListener(v -> responderConChip("No puedo dormir y me siento desvelado"));
         chipBurnout.setOnClickListener(v -> responderConChip("Siento agotamiento total y burnout escolar"));
     }
@@ -143,13 +144,14 @@ public class AsistenteActivity extends AppCompatActivity implements ChatAdapter.
         rvChatMensajes.smoothScrollToPosition(listaMensajes.size() - 1);
 
         etMensajeUsuario.setText("");
+        ultimoTemaTratado = texto;
 
-        // Simular tiempo de respuesta humano (600ms)
+        // Simular tiempo de respuesta humano (500ms)
         new Handler(Looper.getMainLooper()).postDelayed(() -> {
             String nombre = preferencesManager.getUserName();
             String riesgo = preferencesManager.getLastRisk();
 
-            AsistenteLogica.RespuestaBot respuesta = AsistenteLogica.procesarMensajeUsuario(texto, nombre, riesgo);
+            AsistenteLogica.RespuestaBot respuesta = AsistenteLogica.procesarMensajeUsuario(texto, nombre, riesgo, ultimoTemaTratado);
 
             listaMensajes.add(new ChatMessage(
                     respuesta.texto,
@@ -160,15 +162,24 @@ public class AsistenteActivity extends AppCompatActivity implements ChatAdapter.
             ));
             chatAdapter.notifyItemInserted(listaMensajes.size() - 1);
             rvChatMensajes.smoothScrollToPosition(listaMensajes.size() - 1);
-        }, 600);
+        }, 500);
     }
 
     @Override
     public void onEjercicioClick(int tipoEjercicio) {
-        mostrarDialogoEjercicio(tipoEjercicio);
+        if (tipoEjercicio == 2) {
+            mostrarDialogoAnclajeSensorial();
+        } else if (tipoEjercicio == 4) {
+            mostrarDialogoPomodoro();
+        } else if (tipoEjercicio == 5) {
+            mostrarDialogoPausaSomatica();
+        } else {
+            mostrarDialogoRespiracion();
+        }
     }
 
-    private void mostrarDialogoEjercicio(int tipo) {
+    // Ejercicio 1: Respiración 4-7-8
+    private void mostrarDialogoRespiracion() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         View dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_ejercicio_respiracion, null);
         builder.setView(dialogView);
@@ -184,7 +195,7 @@ public class AsistenteActivity extends AppCompatActivity implements ChatAdapter.
         TextView tvSegundos = dialogView.findViewById(R.id.tvSegundosRespiracion);
         MaterialButton btnTerminar = dialogView.findViewById(R.id.btnFinalizarEjercicio);
 
-        tvTitulo.setText(tipo == 1 ? "Respiración Guiada 4-7-8" : "Pausa de Regulación Sensorial");
+        tvTitulo.setText("Respiración Guiada 4-7-8");
 
         CountDownTimer timer = new CountDownTimer(38000, 1000) {
             int fase = 0; // 0: Inhala, 1: Sostén, 2: Exhala
@@ -225,10 +236,58 @@ public class AsistenteActivity extends AppCompatActivity implements ChatAdapter.
         btnTerminar.setOnClickListener(v -> {
             timer.cancel();
             dialog.dismiss();
-            Toast.makeText(this, "¡Bien hecho! Respiración completada.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "¡Respiración completada!", Toast.LENGTH_SHORT).show();
         });
 
         dialog.show();
+    }
+
+    // Ejercicio 2: Anclaje Sensorial (5-4-3-2-1)
+    private void mostrarDialogoAnclajeSensorial() {
+        new AlertDialog.Builder(this)
+                .setTitle("🧘‍♂️ Anclaje Sensorial (5-4-3-2-1)")
+                .setMessage("Tómate un minuto en tu entorno real para identificar mentalmente:\n\n" +
+                        "👀 5 cosas que puedas VER a tu alrededor\n" +
+                        "✋ 4 cosas que puedas TOCAR o sentir (tu ropa, la mesa)\n" +
+                        "👂 3 sonidos que puedas OÍR en el fondo\n" +
+                        "👃 2 aromas que puedas OLER en el aire\n" +
+                        "👅 1 sabor que puedas SABOREAR en tu boca\n\n" +
+                        "Esta técnica interrumpe el ciclo de sobrepensamiento y reconecta tu cerebro con el aquí y ahora.")
+                .setPositiveButton("Me siento más anclado", (d, w) -> {
+                    Toast.makeText(this, "¡Buen trabajo conectando con el presente!", Toast.LENGTH_SHORT).show();
+                })
+                .show();
+    }
+
+    // Ejercicio 4: Pomodoro y Micro-Metas (15 minutos)
+    private void mostrarDialogoPomodoro() {
+        new AlertDialog.Builder(this)
+                .setTitle("⏱️ Técnica de Micro-Metas (15 Min)")
+                .setMessage("El secreto para romper el bloqueo mental es reducir la exigencia:\n\n" +
+                        "1. Elige una sola tarea pequeña (ej. escribir media página, leer 5 hojas o resolver 1 problema).\n" +
+                        "2. Pon un temporizador de 15 minutos.\n" +
+                        "3. Silencia notificaciones y no pienses en nada más.\n\n" +
+                        "Al terminar los 15 minutos, tendrás permiso de tomar 5 minutos de descanso libre.")
+                .setPositiveButton("Entendido, voy a iniciar", (d, w) -> {
+                    Toast.makeText(this, "¡Enfoque activado! Mucho éxito.", Toast.LENGTH_SHORT).show();
+                })
+                .show();
+    }
+
+    // Ejercicio 5: Pausa Somática y Alivio Muscular
+    private void mostrarDialogoPausaSomatica() {
+        new AlertDialog.Builder(this)
+                .setTitle("💧 Pausa Somática (3 Minutos)")
+                .setMessage("Tu cuerpo acumula tensión inconscientemente:\n\n" +
+                        "• Suelta la mandíbula (separa los dientes).\n" +
+                        "• Baja los hombros lejos de las orejas.\n" +
+                        "• Gira la cabeza suavemente en círculos lentos hacia la izquierda y derecha.\n" +
+                        "• Bebe un vaso con agua fresca.\n\n" +
+                        "Dale a tus ojos un descanso mirando a un punto lejano por la ventana.")
+                .setPositiveButton("Pausa completada", (d, w) -> {
+                    Toast.makeText(this, "Cuerpo relajado e hidratado.", Toast.LENGTH_SHORT).show();
+                })
+                .show();
     }
 
     private String obtenerHoraActual() {

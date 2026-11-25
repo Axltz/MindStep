@@ -45,12 +45,22 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
 
             if (msg.isSugiereEjercicio()) {
                 holder.btnAccionEjercicioBot.setVisibility(View.VISIBLE);
-                if (msg.getTipoEjercicio() == 1) {
-                    holder.btnAccionEjercicioBot.setText("▶ Iniciar Respiración 4-7-8");
-                } else if (msg.getTipoEjercicio() == 2) {
-                    holder.btnAccionEjercicioBot.setText("▶ Iniciar Anclaje 5-4-3-2-1");
-                } else {
-                    holder.btnAccionEjercicioBot.setText("▶ Iniciar Pausa de Relajación");
+                switch (msg.getTipoEjercicio()) {
+                    case 1:
+                        holder.btnAccionEjercicioBot.setText("🌬️ Iniciar Respiración 4-7-8");
+                        break;
+                    case 2:
+                        holder.btnAccionEjercicioBot.setText("🧘‍♂️ Iniciar Anclaje 5-4-3-2-1");
+                        break;
+                    case 4:
+                        holder.btnAccionEjercicioBot.setText("⏱️ Temporizador Pomodoro (15 min)");
+                        break;
+                    case 5:
+                        holder.btnAccionEjercicioBot.setText("💧 Pausa Somática y Estiramiento");
+                        break;
+                    default:
+                        holder.btnAccionEjercicioBot.setText("▶ Iniciar Ejercicio Guiado");
+                        break;
                 }
 
                 holder.btnAccionEjercicioBot.setOnClickListener(v -> {
