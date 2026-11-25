@@ -39,11 +39,14 @@
             android:orientation="vertical"
             android:padding="20dp">
 
-            <!-- Card Perfil del Usuario -->
+            <!-- Card Perfil del Usuario (Clickeable para editar) -->
             <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardPerfilUsuario"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="24dp"
+                android:clickable="true"
+                android:focusable="true"
                 app:cardBackgroundColor="@color/card_bg"
                 app:cardCornerRadius="20dp"
                 app:cardElevation="2dp"
@@ -93,6 +96,14 @@
                             android:textColor="@color/text_muted"
                             android:textSize="13sp" />
                     </LinearLayout>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Editar ✏️"
+                        android:textColor="@color/primary"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
@@ -125,8 +136,11 @@
 
                     <!-- Recordatorio Diario -->
                     <RelativeLayout
+                        android:id="@+id/rowRecordatorioDiario"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:clickable="true"
+                        android:focusable="true"
                         android:paddingVertical="8dp">
 
                         <LinearLayout
@@ -145,10 +159,11 @@
                                 android:textStyle="bold" />
 
                             <TextView
+                                android:id="@+id/tvHoraRecordatorio"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="09:00 PM"
-                                android:textColor="@color/text_muted"
+                                android:text="09:00 PM (Toca para cambiar)"
+                                android:textColor="@color/primary"
                                 android:textSize="12sp" />
                         </LinearLayout>
 
@@ -284,12 +299,72 @@
                         android:focusable="true"
                         android:paddingVertical="12dp">
 
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Idioma"
+                                android:textColor="@color/text_dark"
+                                android:textSize="14sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/tvIdiomaTexto"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Español (Latinoamérica)"
+                                android:textColor="@color/text_muted"
+                                android:textSize="12sp" />
+                        </LinearLayout>
+
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Idioma\nEspañol (Latinoamérica)"
-                            android:textColor="@color/text_dark"
-                            android:textSize="14sp" />
+                            android:layout_alignParentEnd="true"
+                            android:layout_centerVertical="true"
+                            android:text="›"
+                            android:textColor="@color/text_muted"
+                            android:textSize="20sp" />
+                    </RelativeLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/card_border" />
+
+                    <!-- Administrar Suscripción -->
+                    <RelativeLayout
+                        android:id="@+id/itemSuscripcion"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:paddingVertical="12dp">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Administrar suscripción"
+                                android:textColor="@color/text_dark"
+                                android:textSize="14sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Plan Estudiantil Gratuito • Ilimitado"
+                                android:textColor="@color/success"
+                                android:textSize="12sp" />
+                        </LinearLayout>
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -349,7 +424,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Contáctanos\nSoporte y ayuda"
+                            android:text="Contáctanos\nSoporte y retroalimentación"
                             android:textColor="@color/text_dark"
                             android:textSize="14sp" />
 
@@ -380,7 +455,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Ayuda y centro de ayuda\nGuías y preguntas frecuentes"
+                            android:text="Ayuda y centro de ayuda\nGuías y preguntas frecuentes (FAQ)"
                             android:textColor="@color/text_dark"
                             android:textSize="14sp" />
 
@@ -411,7 +486,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Valorar la app\nCompartir tu experiencia"
+                            android:text="Valorar la app\nCalificar con estrellas y reseña"
                             android:textColor="@color/text_dark"
                             android:textSize="14sp" />
 
@@ -458,12 +533,25 @@
                         style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
+                        android:layout_marginBottom="10dp"
                         android:text="Repetir Evaluación Diagnóstica Inicial"
                         android:textAllCaps="false"
                         android:textColor="@color/primary"
                         android:textSize="14sp"
                         app:cornerRadius="12dp"
                         app:strokeColor="@color/primary" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnLimpiarHistorialBD"
+                        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:text="Restablecer Datos de Ejemplo en SQLite"
+                        android:textAllCaps="false"
+                        android:textColor="@color/danger"
+                        android:textSize="14sp"
+                        app:cornerRadius="12dp"
+                        app:strokeColor="@color/danger" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 

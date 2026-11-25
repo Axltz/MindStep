@@ -12,11 +12,14 @@ public class PreferencesManager {
     private static final String PREF_NAME = "MindStepPreferences";
     private static final String KEY_FIRST_RUN = "isFirstLogin";
     private static final String KEY_USER_NAME = "userName";
+    private static final String KEY_USER_ID = "userId";
     private static final String KEY_LAST_RISK = "lastRisk";
     private static final String KEY_LAST_SCORE = "lastScore";
     private static final String KEY_DARK_MODE = "darkMode";
     private static final String KEY_REMINDERS = "reminders";
+    private static final String KEY_REMINDER_TIME = "reminderTime";
     private static final String KEY_STRESS_ALERT = "stressAlert";
+    private static final String KEY_IDIOMA = "idioma";
 
     private final SharedPreferences prefs;
 
@@ -33,11 +36,19 @@ public class PreferencesManager {
     }
 
     public String getUserName() {
-        return prefs.getString(KEY_USER_NAME, "Axel");
+        return prefs.getString(KEY_USER_NAME, "Axel Guillermo");
     }
 
     public void setUserName(String name) {
         prefs.edit().putString(KEY_USER_NAME, name).apply();
+    }
+
+    public String getUserId() {
+        return prefs.getString(KEY_USER_ID, "220450053");
+    }
+
+    public void setUserId(String id) {
+        prefs.edit().putString(KEY_USER_ID, id).apply();
     }
 
     public String getLastRisk() {
@@ -72,12 +83,28 @@ public class PreferencesManager {
         prefs.edit().putBoolean(KEY_REMINDERS, enabled).apply();
     }
 
+    public String getReminderTime() {
+        return prefs.getString(KEY_REMINDER_TIME, "09:00 PM");
+    }
+
+    public void setReminderTime(String time) {
+        prefs.edit().putString(KEY_REMINDER_TIME, time).apply();
+    }
+
     public boolean isStressAlertEnabled() {
         return prefs.getBoolean(KEY_STRESS_ALERT, true);
     }
 
     public void setStressAlertEnabled(boolean enabled) {
         prefs.edit().putBoolean(KEY_STRESS_ALERT, enabled).apply();
+    }
+
+    public String getIdioma() {
+        return prefs.getString(KEY_IDIOMA, "Español (Latinoamérica)");
+    }
+
+    public void setIdioma(String idioma) {
+        prefs.edit().putString(KEY_IDIOMA, idioma).apply();
     }
 
     public void resetAll() {
