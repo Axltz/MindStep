@@ -52,11 +52,23 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
                     case 2:
                         holder.btnAccionEjercicioBot.setText("🧘‍♂️ Iniciar Anclaje 5-4-3-2-1");
                         break;
+                    case 3:
+                        holder.btnAccionEjercicioBot.setText("🔄 Iniciar Reencuadre Cognitivo");
+                        break;
                     case 4:
                         holder.btnAccionEjercicioBot.setText("⏱️ Temporizador Pomodoro (15 min)");
                         break;
                     case 5:
                         holder.btnAccionEjercicioBot.setText("💧 Pausa Somática y Estiramiento");
+                        break;
+                    case 6:
+                        holder.btnAccionEjercicioBot.setText("📒 Diario de Gratitud");
+                        break;
+                    case 7:
+                        holder.btnAccionEjercicioBot.setText("🌙 Escáner Corporal para Dormir");
+                        break;
+                    case 8:
+                        holder.btnAccionEjercicioBot.setText("🌟 Visualización Positiva");
                         break;
                     default:
                         holder.btnAccionEjercicioBot.setText("▶ Iniciar Ejercicio Guiado");

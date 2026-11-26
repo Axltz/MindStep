@@ -25,8 +25,8 @@ import java.util.Locale;
 
 /**
  * Pantalla 8: Ajustes y Configuración
- * Administra el perfil local del usuario, switch de modo oscuro,
- * alertas preventivas, notificaciones y utilidades del sistema.
+ * Administra perfil local, switch de modo oscuro funcional,
+ * alertas preventivas, notificaciones y control de datos.
  */
 public class AjustesActivity extends AppCompatActivity {
 
@@ -105,13 +105,12 @@ public class AjustesActivity extends AppCompatActivity {
     private void cargarPreferencias() {
         String nombre = preferencesManager.getUserName();
         if (nombre == null || nombre.trim().isEmpty()) {
-            nombre = "Axel Guillermo";
+            nombre = "Axel";
         }
         tvNombreAjustes.setText(nombre);
         tvAvatarAjustes.setText(String.valueOf(nombre.charAt(0)).toUpperCase());
 
-        String userId = preferencesManager.getUserId();
-        tvIdUsuario.setText("Usuario Local #" + userId);
+        tvIdUsuario.setText("Perfil de Salud Mental");
 
         tvHoraRecordatorio.setText(preferencesManager.getReminderTime() + " (Toca para cambiar)");
         tvIdiomaTexto.setText(preferencesManager.getIdioma());
@@ -122,12 +121,10 @@ public class AjustesActivity extends AppCompatActivity {
     }
 
     private void setupListeners() {
-        // Editar Perfil (desde tarjeta superior o desde fila de perfil)
         View.OnClickListener perfilClickListener = v -> mostrarDialogoEditarPerfil();
         cardPerfilUsuario.setOnClickListener(perfilClickListener);
         itemPerfil.setOnClickListener(perfilClickListener);
 
-        // Recordatorio Diario: TimePicker al tocar
         rowRecordatorioDiario.setOnClickListener(v -> mostrarTimePickerRecordatorio());
 
         switchRecordatorio.setOnCheckedChangeListener((buttonView, isChecked) -> {
@@ -135,13 +132,12 @@ public class AjustesActivity extends AppCompatActivity {
             Toast.makeText(this, isChecked ? "Recordatorio diario activado" : "Recordatorios desactivados", Toast.LENGTH_SHORT).show();
         });
 
-        // Alerta de Estrés
         switchAlertaEstres.setOnCheckedChangeListener((buttonView, isChecked) -> {
             preferencesManager.setStressAlertEnabled(isChecked);
             Toast.makeText(this, isChecked ? "Alertas preventivas de sobrecarga activadas" : "Alertas desactivadas", Toast.LENGTH_SHORT).show();
         });
 
-        // Modo Oscuro
+        // Switch Modo Oscuro Funcional con persistencia
         switchModoOscuro.setOnCheckedChangeListener((buttonView, isChecked) -> {
             preferencesManager.setDarkMode(isChecked);
             if (isChecked) {
@@ -151,22 +147,12 @@ public class AjustesActivity extends AppCompatActivity {
             }
         });
 
-        // Idioma
         itemIdioma.setOnClickListener(v -> mostrarSelectorIdioma());
-
-        // Suscripción
         itemSuscripcion.setOnClickListener(v -> mostrarDialogoSuscripcion());
-
-        // Soporte / Contacto
         itemContacto.setOnClickListener(v -> mostrarDialogoContacto());
-
-        // FAQ / Ayuda
         itemAyuda.setOnClickListener(v -> mostrarDialogoFAQ());
-
-        // Valorar
         itemValorar.setOnClickListener(v -> mostrarDialogoValorar());
 
-        // Repetir Evaluación Diagnóstica Inicial
         btnReiniciarDiagnostico.setOnClickListener(v -> {
             new AlertDialog.Builder(this)
                     .setTitle("Repetir Evaluación Diagnóstica")
@@ -180,44 +166,32 @@ public class AjustesActivity extends AppCompatActivity {
                     .show();
         });
 
-        // Restablecer Datos de Ejemplo
-        btnLimpiarHistorialBD.setOnClickListener(v -> confirmarRestablecerBD());
+        // Limpiar Historial de BD SQLite
+        btnLimpiarHistorialBD.setOnClickListener(v -> confirmarLimpiarBD());
     }
 
     private void mostrarDialogoEditarPerfil() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Editar Perfil Local");
+        builder.setTitle("Editar Perfil");
 
-        View view = LayoutInflater.from(this).inflate(android.R.layout.select_dialog_item, null);
         android.widget.LinearLayout layout = new android.widget.LinearLayout(this);
         layout.setOrientation(android.widget.LinearLayout.VERTICAL);
         layout.setPadding(60, 30, 60, 20);
 
         final EditText etNombre = new EditText(this);
-        etNombre.setHint("Nombre completo");
+        etNombre.setHint("Tu nombre");
         etNombre.setText(preferencesManager.getUserName());
         layout.addView(etNombre);
-
-        final EditText etCodigo = new EditText(this);
-        etCodigo.setHint("Código de estudiante");
-        etCodigo.setText(preferencesManager.getUserId());
-        layout.addView(etCodigo);
 
         builder.setView(layout);
 
         builder.setPositiveButton("Guardar", (dialog, which) -> {
             String nuevoNombre = etNombre.getText().toString().trim();
-            String nuevoCodigo = etCodigo.getText().toString().trim();
-
             if (!TextUtils.isEmpty(nuevoNombre)) {
                 preferencesManager.setUserName(nuevoNombre);
+                cargarPreferencias();
+                Toast.makeText(this, "Perfil actualizado", Toast.LENGTH_SHORT).show();
             }
-            if (!TextUtils.isEmpty(nuevoCodigo)) {
-                preferencesManager.setUserId(nuevoCodigo);
-            }
-
-            cargarPreferencias();
-            Toast.makeText(this, "Perfil actualizado correctamente", Toast.LENGTH_SHORT).show();
         });
 
         builder.setNegativeButton("Cancelar", null);
@@ -255,7 +229,7 @@ public class AjustesActivity extends AppCompatActivity {
                 .setSingleChoiceItems(idiomas, seleccionado, (dialog, which) -> {
                     preferencesManager.setIdioma(idiomas[which]);
                     tvIdiomaTexto.setText(idiomas[which]);
-                    Toast.makeText(this, "Idioma configurado: " + idiomas[which], Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "Idioma: " + idiomas[which], Toast.LENGTH_SHORT).show();
                     dialog.dismiss();
                 })
                 .setNegativeButton("Cancelar", null)
@@ -264,22 +238,22 @@ public class AjustesActivity extends AppCompatActivity {
 
     private void mostrarDialogoSuscripcion() {
         new AlertDialog.Builder(this)
-                .setTitle("Plan Estudiantil MindStep")
-                .setMessage("Tu plan actual es 100% Gratuito e Ilimitado.\n\n" +
-                        "• Almacenamiento local SQLite seguro sin límites\n" +
-                        "• Asistente preventivo interactivo siempre disponible offline\n" +
-                        "• Registro diario de métricas y análisis de patrones\n" +
-                        "• Sin publicidad y con total privacidad de tus datos.")
-                .setPositiveButton("Entendido", null)
+                .setTitle("Plan MindStep")
+                .setMessage("Tu plan actual es 100% Gratuito, Privado y Sin Límite.\n\n" +
+                        "• Almacenamiento local SQLite seguro\n" +
+                        "• Asistente preventivo con IA generativa\n" +
+                        "• Monitoreo de hábitos y patrones\n" +
+                        "• Sin anuncios y tus datos no salen de tu dispositivo.")
+                .setPositiveButton("Excelente", null)
                 .show();
     }
 
     private void mostrarDialogoContacto() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Soporte y Retroalimentación");
+        builder.setTitle("Soporte y Sugerencias");
 
         final EditText input = new EditText(this);
-        input.setHint("Escribe tu duda, reporte o sugerencia...");
+        input.setHint("Escribe tu duda o sugerencia...");
         input.setMinLines(3);
         input.setPadding(40, 30, 40, 30);
         builder.setView(input);
@@ -287,7 +261,7 @@ public class AjustesActivity extends AppCompatActivity {
         builder.setPositiveButton("Enviar", (dialog, which) -> {
             String texto = input.getText().toString().trim();
             if (!TextUtils.isEmpty(texto)) {
-                Toast.makeText(this, "¡Gracias! Tu reporte ha sido recibido por el equipo de MindStep.", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "¡Mensaje recibido! Gracias por ayudarnos a mejorar.", Toast.LENGTH_LONG).show();
             }
         });
         builder.setNegativeButton("Cerrar", null);
@@ -296,14 +270,14 @@ public class AjustesActivity extends AppCompatActivity {
 
     private void mostrarDialogoFAQ() {
         new AlertDialog.Builder(this)
-                .setTitle("Centro de Ayuda y Preguntas Frecuentes")
-                .setMessage("1. ¿Cómo se calcula mi nivel de riesgo?\n" +
-                        "El sistema analiza tus horas de sueño (<6h resta puntos), nivel de estrés percibido y estado de ánimo diario con el algoritmo de ValidadorMetricas.\n\n" +
-                        "2. ¿Mis datos salen de mi teléfono?\n" +
-                        "No. La app fue diseñada bajo el principio 'Offline First'. Toda la información se queda en la base de datos interna SQLite de tu celular.\n\n" +
-                        "3. ¿Qué hago si tengo un ataque de pánico?\n" +
-                        "Abre el Asistente Preventivo y presiona 'Respiración 4-7-8' o escribe 'ansiedad' para que te guíe paso a paso.")
-                .setPositiveButton("Cerrar", null)
+                .setTitle("Preguntas Frecuentes")
+                .setMessage("1. ¿Cómo se calcula mi riesgo?\n" +
+                        "Analiza sueño (<6h resta), nivel de estrés y estado de ánimo.\n\n" +
+                        "2. ¿Dónde se guardan mis datos?\n" +
+                        "En tu teléfono (SQLite local). Nadie más tiene acceso.\n\n" +
+                        "3. ¿Cómo uso el chatbot?\n" +
+                        "Abre el asistente y háblale de lo que sea: ansiedad, exámenes, insomnio, etc.")
+                .setPositiveButton("Entendido", null)
                 .show();
     }
 
@@ -319,35 +293,24 @@ public class AjustesActivity extends AppCompatActivity {
         ratingBar.setIsIndicator(false);
         ratingBar.setNumStars(5);
         ratingBar.setRating(5);
-        ratingBar.setLayoutParams(new android.widget.LinearLayout.LayoutParams(
-                android.widget.LinearLayout.LayoutParams.WRAP_CONTENT,
-                android.widget.LinearLayout.LayoutParams.WRAP_CONTENT
-        ));
         layout.addView(ratingBar);
-
-        final EditText etComentario = new EditText(this);
-        etComentario.setHint("¿Qué te ha parecido la experiencia?");
-        etComentario.setPadding(0, 30, 0, 10);
-        layout.addView(etComentario);
 
         builder.setView(layout);
 
-        builder.setPositiveButton("Enviar Calificación", (dialog, which) -> {
-            Toast.makeText(this, "¡Muchas gracias por tus " + (int) ratingBar.getRating() + " estrellas! ⭐", Toast.LENGTH_SHORT).show();
+        builder.setPositiveButton("Enviar", (dialog, which) -> {
+            Toast.makeText(this, "¡Gracias por tus " + (int) ratingBar.getRating() + " estrellas! ⭐", Toast.LENGTH_SHORT).show();
         });
         builder.setNegativeButton("Cancelar", null);
         builder.show();
     }
 
-    private void confirmarRestablecerBD() {
+    private void confirmarLimpiarBD() {
         new AlertDialog.Builder(this)
-                .setTitle("Restablecer Base de Datos")
-                .setMessage("¿Deseas reiniciar los datos locales de hábitos y volver a cargar los datos de prueba de Octubre?")
-                .setPositiveButton("Sí, restablecer", (dialog, which) -> {
-                    dbHelper.restablecerDatosEjemplo();
-                    preferencesManager.setLastRisk("Bajo");
-                    preferencesManager.setLastScore(85);
-                    Toast.makeText(this, "Datos de prueba restablecidos en SQLite", Toast.LENGTH_SHORT).show();
+                .setTitle("Limpiar Historial de Registros")
+                .setMessage("¿Estás seguro de que deseas borrar todos los registros de hábitos guardados?")
+                .setPositiveButton("Sí, borrar todo", (dialog, which) -> {
+                    dbHelper.limpiarHistorial();
+                    Toast.makeText(this, "Historial de registros vaciado", Toast.LENGTH_SHORT).show();
                 })
                 .setNegativeButton("Cancelar", null)
                 .show();

@@ -92,7 +92,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="2dp"
-                            android:text="Usuario Local #220450053"
+                            android:text="Perfil de Salud Mental"
                             android:textColor="@color/text_muted"
                             android:textSize="13sp" />
                     </LinearLayout>
@@ -546,7 +546,7 @@
                         style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
-                        android:text="Restablecer Datos de Ejemplo en SQLite"
+                        android:text="Vaciar Todo el Historial en SQLite"
                         android:textAllCaps="false"
                         android:textColor="@color/danger"
                         android:textSize="14sp"
