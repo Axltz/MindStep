@@ -159,7 +159,10 @@ public class AsistenteActivity extends AppCompatActivity implements ChatAdapter.
 
             @Override
             public void onError(String mensajeError) {
-                GenerativeEngine.ResultadoAI local = GenerativeEngine.generarRespuesta(texto, nombre, riesgo, new ArrayList<>());
+                GenerativeEngine.ResultadoAI local = GenerativeEngine.resolverLocalSiExiste(texto, nombre, riesgo, new ArrayList<>());
+                if (local == null) {
+                    local = GenerativeEngine.generarFallbackDesconectado(nombre, riesgo);
+                }
                 listaMensajes.add(new ChatMessage(
                         local.texto,
                         true,

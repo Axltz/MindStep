@@ -13,18 +13,22 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 /**
- * Servicio Inteligente de Asistente IA para MindStep
- * Funciona de forma 100% autónoma, gratuita y sin configuración técnica
- * utilizando el motor GenerativeEngine local, con opción transparente de Gemini si hay API Key.
+ * Servicio Híbrido Inteligente para MindStep:
+ * 1. Primero intenta resolver con el motor de Salud Mental Local (rápido, gratis y sin red).
+ * 2. Si es una pregunta abierta o no encuentra respuesta genérica, consulta a la IA Generativa Gemini 1.5 Flash.
+ * 3. Si no hay conexión a internet o falla la API, usa el fallback seguro de contingencia.
  */
 public class GeminiAssistantService {
 
+    // Endpoint oficial de Google Gemini API
     private static final String MODEL_ENDPOINT = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=";
+
+    // API Key de cortesía para pruebas del sistema (se puede sobreescribir desde ajustes)
+    public static final String DEFAULT_GEMINI_KEY = "";
 
     private final ExecutorService executor = Executors.newSingleThreadExecutor();
     private final Handler mainHandler = new Handler(Looper.getMainLooper());
@@ -35,25 +39,34 @@ public class GeminiAssistantService {
     }
 
     public void enviarMensajeAI(String mensajeUsuario, String nombreUsuario, String riesgoActual, String apiKeyCustom, OnRespuestaListener listener) {
-        // Si no hay API key configurada por el usuario (la mayoría de personas normales),
-        // usa automáticamente el motor de IA generativa autónomo local sin costo y sin límites
-        if (apiKeyCustom == null || apiKeyCustom.trim().isEmpty()) {
+        // PASO 1: Evaluar si el mensaje coincide con alguna categoría del motor local TCC
+        GenerativeEngine.ResultadoAI local = GenerativeEngine.resolverLocalSiExiste(
+                mensajeUsuario,
+                nombreUsuario,
+                riesgoActual,
+                new ArrayList<>()
+        );
+
+        if (local != null) {
+            // Encontró respuesta de salud mental específica: responder de inmediato
             mainHandler.postDelayed(() -> {
-                GenerativeEngine.ResultadoAI res = GenerativeEngine.generarRespuesta(
-                        mensajeUsuario,
-                        nombreUsuario,
-                        riesgoActual,
-                        new ArrayList<>()
-                );
-                listener.onRespuesta(res.texto, res.sugiereEjercicio, res.tipoEjercicio);
-            }, 600); // Pequeña latencia natural de pensamiento
+                listener.onRespuesta(local.texto, local.sugiereEjercicio, local.tipoEjercicio);
+            }, 400);
             return;
         }
 
-        // Si el usuario configuró una API Key, consulta a los servidores de Gemini
+        // PASO 2: NO encontró respuesta genérica. Disparar IA Generativa en la nube (Gemini)
+        String claveFinal = (apiKeyCustom != null && !apiKeyCustom.trim().isEmpty()) ? apiKeyCustom.trim() : DEFAULT_GEMINI_KEY;
+
+        if (claveFinal.isEmpty()) {
+            // Sin API Key configurada para la nube: responder con fallback empático offline
+            fallbackLocal(nombreUsuario, riesgoActual, listener);
+            return;
+        }
+
         executor.execute(() -> {
             try {
-                URL url = new URL(MODEL_ENDPOINT + apiKeyCustom);
+                URL url = new URL(MODEL_ENDPOINT + claveFinal);
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 conn.setRequestMethod("POST");
                 conn.setRequestProperty("Content-Type", "application/json; charset=utf-8");
@@ -63,9 +76,13 @@ public class GeminiAssistantService {
 
                 JSONObject root = new JSONObject();
 
+                // System Instruction: Marco ético y terapéutico
                 JSONObject systemInstruction = new JSONObject();
                 JSONObject systemParts = new JSONObject();
-                systemParts.put("text", "Eres MindStep, asistente empático de salud mental estudiantil. Responde con calidez y TCC en español de Latinoamérica.");
+                systemParts.put("text", "Eres MindStep, un asistente empático de salud mental estudiantil creado por Axel. " +
+                        "Responde con calidez, psicología cognitivo-conductual (TCC), en español de Latinoamérica de forma concisa (máximo 3 párrafos). " +
+                        "El usuario se llama " + (nombreUsuario != null ? nombreUsuario : "amigo") + " y su nivel de estrés actual es: " + riesgoActual + ". " +
+                        "Si el usuario expresa ideas suicidas o autolesión, recomiéndale de inmediato la Línea de la Vida en México: 800 911 2000.");
                 JSONArray systemPartsArray = new JSONArray();
                 systemPartsArray.put(systemParts);
                 systemInstruction.put("parts", systemPartsArray);
@@ -103,25 +120,22 @@ public class GeminiAssistantService {
                             .getJSONObject(0)
                             .getString("text");
 
-                    boolean incluyeEjercicio = botTexto.toLowerCase().contains("respir") || botTexto.toLowerCase().contains("4-7-8");
-                    mainHandler.post(() -> listener.onRespuesta(botTexto, incluyeEjercicio, 1));
+                    boolean sugiereRespiracion = botTexto.toLowerCase().contains("respir");
+                    int tipo = sugiereRespiracion ? 1 : 0;
+
+                    mainHandler.post(() -> listener.onRespuesta(botTexto, sugiereRespiracion, tipo));
                 } else {
-                    fallbackLocal(mensajeUsuario, nombreUsuario, riesgoActual, listener);
+                    fallbackLocal(nombreUsuario, riesgoActual, listener);
                 }
             } catch (Exception e) {
-                fallbackLocal(mensajeUsuario, nombreUsuario, riesgoActual, listener);
+                fallbackLocal(nombreUsuario, riesgoActual, listener);
             }
         });
     }
 
-    private void fallbackLocal(String mensaje, String nombre, String riesgo, OnRespuestaListener listener) {
+    private void fallbackLocal(String nombre, String riesgo, OnRespuestaListener listener) {
         mainHandler.post(() -> {
-            GenerativeEngine.ResultadoAI res = GenerativeEngine.generarRespuesta(
-                    mensaje,
-                    nombre,
-                    riesgo,
-                    new ArrayList<>()
-            );
+            GenerativeEngine.ResultadoAI res = GenerativeEngine.generarFallbackDesconectado(nombre, riesgo);
             listener.onRespuesta(res.texto, res.sugiereEjercicio, res.tipoEjercicio);
         });
     }
