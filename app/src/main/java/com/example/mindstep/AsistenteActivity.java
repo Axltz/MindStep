@@ -5,8 +5,6 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.os.Handler;
-import android.os.Looper;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,9 +27,9 @@ import java.util.List;
 import java.util.Locale;
 
 /**
- * Pantalla 7: Asistente de Apoyo Preventivo (Chatbot Conversacional Real)
- * Módulo de triaje interactivo basado en TCC para acompañar al usuario,
- * escuchar desahogos y proveer múltiples técnicas de regulación.
+ * Pantalla 7: Asistente de Apoyo Preventivo (Chatbot con IA Generativa Real)
+ * Conexión a Gemini AI con Prompt Ético de Psicología Cognitiva Preventiva
+ * y fallback automático a motor local de triaje TCC sin conexión.
  */
 public class AsistenteActivity extends AppCompatActivity implements ChatAdapter.OnEjercicioClickListener {
 
@@ -49,7 +47,7 @@ public class AsistenteActivity extends AppCompatActivity implements ChatAdapter.
     private ChatAdapter chatAdapter;
     private List<ChatMessage> listaMensajes;
     private PreferencesManager preferencesManager;
-    private String ultimoTemaTratado = "";
+    private GeminiAssistantService geminiService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +55,7 @@ public class AsistenteActivity extends AppCompatActivity implements ChatAdapter.
         setContentView(R.layout.activity_asistente);
 
         preferencesManager = new PreferencesManager(this);
+        geminiService = new GeminiAssistantService();
 
         initViews();
         setupRecyclerView();
@@ -93,11 +92,11 @@ public class AsistenteActivity extends AppCompatActivity implements ChatAdapter.
 
         String mensajeBienvenida;
         if ("Elevado".equalsIgnoreCase(riesgo)) {
-            mensajeBienvenida = "Hola " + nombre + ". He detectado que tus últimos registros muestran un nivel de estrés elevado.\n\nEstoy aquí para escucharte y ayudarte a descomprimir la tensión. ¿Cómo te sientes en este instante?";
+            mensajeBienvenida = "Hola " + nombre + ". He detectado que tus últimos registros muestran un nivel de estrés elevado.\n\nSoy tu asistente de bienestar con IA generativa ética. Estoy aquí para escucharte y ayudarte a descomprimir la tensión. ¿Cómo te sientes en este instante?";
         } else if ("Moderado".equalsIgnoreCase(riesgo)) {
             mensajeBienvenida = "Hola " + nombre + ". Veo que tu ritmo diario ha estado algo agitado. ¿Cuál es la causa principal de esa presión hoy?";
         } else {
-            mensajeBienvenida = "¡Hola " + nombre + "! Tus hábitos se mantienen en equilibrio hoy. Recuerda que puedes escribirme para desahogarte, planear tus descansos o hacer ejercicios guiados.";
+            mensajeBienvenida = "¡Hola " + nombre + "! Tus hábitos se mantienen en equilibrio hoy. Recuerda que puedes platicar conmigo libremente sobre lo que sientes, tus tareas o hacer ejercicios de regulación.";
         }
 
         listaMensajes.add(new ChatMessage(mensajeBienvenida, true, horaActual));
@@ -144,25 +143,41 @@ public class AsistenteActivity extends AppCompatActivity implements ChatAdapter.
         rvChatMensajes.smoothScrollToPosition(listaMensajes.size() - 1);
 
         etMensajeUsuario.setText("");
-        ultimoTemaTratado = texto;
 
-        // Simular tiempo de respuesta humano (500ms)
-        new Handler(Looper.getMainLooper()).postDelayed(() -> {
-            String nombre = preferencesManager.getUserName();
-            String riesgo = preferencesManager.getLastRisk();
+        String nombre = preferencesManager.getUserName();
+        String riesgo = preferencesManager.getLastRisk();
+        String apiKey = preferencesManager.getGeminiApiKey();
 
-            AsistenteLogica.RespuestaBot respuesta = AsistenteLogica.procesarMensajeUsuario(texto, nombre, riesgo, ultimoTemaTratado);
+        // Llamada a la IA Generativa (Gemini con System Prompt Ético)
+        geminiService.enviarMensajeAI(texto, nombre, riesgo, apiKey, new GeminiAssistantService.OnRespuestaListener() {
+            @Override
+            public void onRespuesta(String respuestaTexto, boolean sugiereEjercicio, int tipoEjercicio) {
+                listaMensajes.add(new ChatMessage(
+                        respuestaTexto,
+                        true,
+                        obtenerHoraActual(),
+                        sugiereEjercicio,
+                        tipoEjercicio
+                ));
+                chatAdapter.notifyItemInserted(listaMensajes.size() - 1);
+                rvChatMensajes.smoothScrollToPosition(listaMensajes.size() - 1);
+            }
 
-            listaMensajes.add(new ChatMessage(
-                    respuesta.texto,
-                    true,
-                    obtenerHoraActual(),
-                    respuesta.incluyeEjercicio,
-                    respuesta.tipoEjercicio
-            ));
-            chatAdapter.notifyItemInserted(listaMensajes.size() - 1);
-            rvChatMensajes.smoothScrollToPosition(listaMensajes.size() - 1);
-        }, 500);
+            @Override
+            public void onError(String mensajeError) {
+                // Fallback automático al motor local TCC
+                AsistenteLogica.RespuestaBot local = AsistenteLogica.procesarMensajeUsuario(texto, nombre, riesgo, "");
+                listaMensajes.add(new ChatMessage(
+                        local.texto,
+                        true,
+                        obtenerHoraActual(),
+                        local.incluyeEjercicio,
+                        local.tipoEjercicio
+                ));
+                chatAdapter.notifyItemInserted(listaMensajes.size() - 1);
+                rvChatMensajes.smoothScrollToPosition(listaMensajes.size() - 1);
+            }
+        });
     }
 
     @Override

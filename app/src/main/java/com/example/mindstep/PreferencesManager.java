@@ -20,6 +20,7 @@ public class PreferencesManager {
     private static final String KEY_REMINDER_TIME = "reminderTime";
     private static final String KEY_STRESS_ALERT = "stressAlert";
     private static final String KEY_IDIOMA = "idioma";
+    private static final String KEY_GEMINI_API_KEY = "geminiApiKey";
 
     private final SharedPreferences prefs;
 
@@ -105,6 +106,14 @@ public class PreferencesManager {
 
     public void setIdioma(String idioma) {
         prefs.edit().putString(KEY_IDIOMA, idioma).apply();
+    }
+
+    public String getGeminiApiKey() {
+        return prefs.getString(KEY_GEMINI_API_KEY, "");
+    }
+
+    public void setGeminiApiKey(String key) {
+        prefs.edit().putString(KEY_GEMINI_API_KEY, key).apply();
     }
 
     public void resetAll() {
